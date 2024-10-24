@@ -20,6 +20,7 @@ import {
   PATH_AUTH,
   PATH_CORPORATE,
   PATH_DASHBOARD,
+  PATH_DASHBOARD_ADMIN,
   PATH_DOCS,
   PATH_ERROR,
   PATH_GITHUB,
@@ -50,6 +51,7 @@ const getItem = (
 };
 
 const items: MenuProps['items'] = [
+  getItem(<Link to={PATH_DASHBOARD_ADMIN.root}>Dashboard</Link>, 'dashboard', <PieChartOutlined />),
   getItem('Dashboards', 'dashboards', <PieChartOutlined />, [
     getItem(<Link to={PATH_DASHBOARD.default}>Default</Link>, 'default', null),
     getItem(
