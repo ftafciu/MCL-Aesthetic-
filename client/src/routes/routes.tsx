@@ -46,6 +46,8 @@ import {
 import React, { ReactNode, useEffect } from 'react';
 import { AboutPage } from '../pages/About.tsx';
 import { Dashboard } from '../pages/admin/dashboard/index.tsx';
+import ListContent from '../pages/admin/clients/content/ListContent.tsx';
+import ExpensePage from '../pages/admin/expenses/index.tsx';
 
 // Custom scroll restoration function
 export const ScrollToTop: React.FC = () => {
@@ -99,6 +101,30 @@ const router = createBrowserRouter([
         index: true,
         path: "",
         element: <Dashboard />
+      }
+    ]
+  },
+  {
+    path: "/client",
+    element: <PageWrapper children={<DashboardLayout />} />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "",
+        element: <ListContent />
+      }
+    ]
+  },
+  {
+    path: "/expenses",
+    element: <PageWrapper children={<DashboardLayout />} />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "",
+        element: <ExpensePage />
       }
     ]
   },

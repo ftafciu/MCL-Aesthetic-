@@ -4,6 +4,8 @@ function path(root: string, sublink: string) {
 
 const ROOTS_LANDING = '/';
 const ROOT_DASHBOARD = "/dashboard";
+const ROOT_CLIENT = '/client';
+const ROOT_EXPENSES = "/expenses";
 const ROOTS_DASHBOARD = '/dashboards';
 const ROOTS_SITEMAP = '/sitemap';
 const ROOTS_LAYOUT = '/layouts';
@@ -48,6 +50,14 @@ export const PATH_DASHBOARD = {
   learning: path(ROOTS_DASHBOARD, '/learning'),
   logistics: path(ROOTS_DASHBOARD, '/logistics'),
 };
+
+export const PATH_CLIENTS = {
+  root: ROOT_CLIENT
+};
+
+export const PATH_EXPENSES = {
+  root: ROOT_EXPENSES
+}
 
 export const PATH_SITEMAP = {
   root: ROOTS_SITEMAP,
