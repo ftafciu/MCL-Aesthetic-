@@ -9,6 +9,7 @@ import {
   PATH_CONTACTS,
   PATH_CORPORATE,
   PATH_DASHBOARD,
+  PATH_DASHBOARD_ADMIN,
   PATH_DOCS,
   PATH_ERROR,
   PATH_FILE,
@@ -25,6 +26,7 @@ import {
   PATH_SITEMAP,
   PATH_SOCIALS,
   PATH_ABOUT,
+  PATH_CLIENTS
 } from './routes.ts';
 
 const DASHBOARD_ITEMS = [
@@ -75,6 +77,8 @@ const ERROR_ITEMS = [
   { title: '503', path: PATH_ERROR.error503 },
 ];
 
+const BACKEND_URL = 'http://localhost:5443';
+
 export {
   PATH_CALENDAR,
   PATH_USER_MGMT,
@@ -84,6 +88,8 @@ export {
   PATH_CORPORATE,
   PATH_CONTACTS,
   PATH_DASHBOARD,
+  PATH_DASHBOARD_ADMIN,
+  PATH_CLIENTS,
   PATH_CHANGELOG,
   PATH_CAREERS,
   PATH_ACCOUNT,
@@ -107,4 +113,5 @@ export {
   AUTHENTICATION_ITEMS,
   ERROR_ITEMS,
   PATH_ABOUT,
+  BACKEND_URL
 };

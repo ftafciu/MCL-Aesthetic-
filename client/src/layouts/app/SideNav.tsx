@@ -4,6 +4,7 @@ import {
   AppstoreAddOutlined,
   BranchesOutlined,
   BugOutlined,
+  DollarOutlined,
   GithubOutlined,
   IdcardOutlined,
   InfoCircleOutlined,
@@ -12,6 +13,7 @@ import {
   SecurityScanOutlined,
   SnippetsOutlined,
   UserOutlined,
+  UserSwitchOutlined,
 } from '@ant-design/icons';
 import { Logo } from '../../components';
 import { Link, useLocation } from 'react-router-dom';
@@ -20,6 +22,8 @@ import {
   PATH_AUTH,
   PATH_CORPORATE,
   PATH_DASHBOARD,
+  PATH_DASHBOARD_ADMIN,
+  PATH_CLIENTS,
   PATH_DOCS,
   PATH_ERROR,
   PATH_GITHUB,
@@ -28,6 +32,7 @@ import {
   PATH_USER_PROFILE,
 } from '../../constants';
 import { COLOR } from '../../App.tsx';
+import { PATH_EXPENSES } from '../../constants/routes.ts';
 
 const { Sider } = Layout;
 
@@ -50,6 +55,9 @@ const getItem = (
 };
 
 const items: MenuProps['items'] = [
+  getItem(<Link to={PATH_DASHBOARD_ADMIN.root}>Dashboard</Link>, 'dashboard', <PieChartOutlined />),
+  getItem(<Link to={PATH_CLIENTS.root}>Clients</Link>, 'clients', <UserSwitchOutlined />),
+  getItem(<Link to={PATH_EXPENSES.root}>Expenses</Link>, 'expenses', <DollarOutlined />),
   getItem('Dashboards', 'dashboards', <PieChartOutlined />, [
     getItem(<Link to={PATH_DASHBOARD.default}>Default</Link>, 'default', null),
     getItem(

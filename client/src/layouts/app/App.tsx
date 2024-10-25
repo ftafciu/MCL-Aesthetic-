@@ -39,6 +39,7 @@ import { PATH_LANDING } from '../../constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../../redux/theme/themeSlice.ts';
 import { RootState } from '../../redux/store.ts';
+import { logout } from '../../pages/authentication/scripts/login-scripts.ts';
 const { Content } = Layout;
 
 type AppLayoutProps = {
@@ -84,14 +85,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       icon: <LogoutOutlined />,
       danger: true,
       onClick: () => {
-        message.open({
-          type: 'loading',
-          content: 'signing you out',
-        });
-
-        setTimeout(() => {
-          navigate(PATH_LANDING.root);
-        }, 1000);
+        logout(navigate, message);
       },
     },
   ];
@@ -184,12 +178,6 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               />
             </Flex>
             <Flex align="center" gap="small">
-              <Tooltip title="Apps">
-                <Button icon={<AppstoreOutlined />} type="text" size="large" />
-              </Tooltip>
-              <Tooltip title="Messages">
-                <Button icon={<MessageOutlined />} type="text" size="large" />
-              </Tooltip>
               <Tooltip title="Theme">
                 <Switch
                   className=" hidden sm:inline py-1"
@@ -202,7 +190,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               <Dropdown menu={{ items }} trigger={['click']}>
                 <Flex>
                   <img
-                    src="/me.jpg"
+                    src="/mcl-logo.jpg"
                     alt="user profile photo"
                     height={36}
                     width={36}

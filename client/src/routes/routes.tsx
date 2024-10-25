@@ -1,4 +1,4 @@
-import { createBrowserRouter, useLocation } from 'react-router-dom';
+import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom';
 import {
   AccountDeactivePage,
   BiddingDashboardPage,
@@ -45,6 +45,10 @@ import {
 } from '../layouts';
 import React, { ReactNode, useEffect } from 'react';
 import { AboutPage } from '../pages/About.tsx';
+import { Dashboard } from '../pages/admin/dashboard/index.tsx';
+import ListContent from '../pages/admin/clients/content/ListContent.tsx';
+import ExpensePage from '../pages/admin/expenses/index.tsx';
+import SafeRoute from '../pages/authentication/SafeRoute.tsx';
 
 // Custom scroll restoration function
 export const ScrollToTop: React.FC = () => {
@@ -85,9 +89,45 @@ const router = createBrowserRouter([
       {
         index: true,
         path: '',
-        element: <HomePage />,
+        element: <Navigate to="/auth/signin" replace />,
       },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: <PageWrapper children={<DashboardLayout />} />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "",
+        element: <SafeRoute><Dashboard /></SafeRoute>
+      }
+    ]
+  },
+  {
+    path: "/client",
+    element: <PageWrapper children={<DashboardLayout />} />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "",
+        element: <SafeRoute><ListContent /></SafeRoute>
+      }
+    ]
+  },
+  {
+    path: "/expenses",
+    element: <PageWrapper children={<DashboardLayout />} />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "",
+        element: <SafeRoute><ExpensePage /></SafeRoute>
+      }
+    ]
   },
   {
     path: '/dashboards',
@@ -223,7 +263,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'signin',
-        element: <SignInPage />,
+        element: <SafeRoute><SignInPage /></SafeRoute>,
       },
       {
         path: 'welcome',
@@ -235,7 +275,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'password-reset',
-        element: <PasswordResetPage />,
+        element: <SafeRoute><PasswordResetPage /></SafeRoute>,
       },
       {
         path: 'account-delete',
