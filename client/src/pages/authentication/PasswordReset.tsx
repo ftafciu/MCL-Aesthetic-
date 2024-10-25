@@ -9,11 +9,11 @@ import {
   theme,
   Typography,
 } from 'antd';
-import { Logo } from '../../components';
 import { useMediaQuery } from 'react-responsive';
 import { PATH_DASHBOARD } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Sticker from "../../assets/login-img.jpg";
 
 const { Title, Text } = Typography;
 
@@ -48,23 +48,16 @@ export const PasswordResetPage = () => {
   };
 
   return (
-    <Row style={{ minHeight: isMobile ? 'auto' : '100vh', overflow: 'hidden' }}>
+    <Row style={{ minHeight: isMobile ? 'auto' : '100vh', overflow: 'scroll', maxHeight:'100vh' }}>
       <Col xs={24} lg={12}>
         <Flex
           vertical
           align="center"
           justify="center"
           className="text-center"
-          style={{ background: colorPrimary, height: '100%', padding: '1rem' }}
+          style={{ height: '100%' }}
         >
-          <Logo color="white" />
-          <Title level={2} className="text-white">
-            Welcome back to Antd Admin
-          </Title>
-          <Text className="text-white" style={{ fontSize: 18 }}>
-            A dynamic and versatile multipurpose dashboard utilizing Ant Design,
-            React, TypeScript, and Vite.
-          </Text>
+          <img src={Sticker} alt='login-sticker' width={'100%'} height={'100%'}></img>
         </Flex>
       </Col>
       <Col xs={24} lg={12}>

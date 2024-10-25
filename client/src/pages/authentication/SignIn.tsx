@@ -2,7 +2,6 @@ import {
   Button,
   Checkbox,
   Col,
-  Divider,
   Flex,
   Form,
   Input,
@@ -11,18 +10,13 @@ import {
   theme,
   Typography,
 } from 'antd';
-import {
-  FacebookFilled,
-  GoogleOutlined,
-  TwitterOutlined,
-} from '@ant-design/icons';
-import { Logo } from '../../components';
 import { useMediaQuery } from 'react-responsive';
 import { PATH_AUTH, PATH_DASHBOARD } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import Sticker from "../../assets/login-img.jpg";
 
-const { Title, Text, Link } = Typography;
+const { Title, Link } = Typography;
 
 type FieldType = {
   email?: string;
@@ -57,23 +51,16 @@ export const SignInPage = () => {
   };
 
   return (
-    <Row style={{ minHeight: isMobile ? 'auto' : '100vh', overflow: 'hidden' }}>
+    <Row style={{ minHeight: isMobile ? 'auto' : '100vh', overflow: 'scroll', maxHeight: '100vh' }}>
       <Col xs={24} lg={12}>
         <Flex
           vertical
           align="center"
           justify="center"
           className="text-center"
-          style={{ background: colorPrimary, height: '100%', padding: '1rem' }}
+          style={{ height: '100%' }}
         >
-          <Logo color="white" />
-          <Title level={2} className="text-white">
-            Welcome back to Antd Admin
-          </Title>
-          <Text className="text-white" style={{ fontSize: 18 }}>
-            A dynamic and versatile multipurpose dashboard utilizing Ant Design,
-            React, TypeScript, and Vite.
-          </Text>
+          <img src={Sticker} alt='login-sticker' width={'100%'} height={'100%'}></img>
         </Flex>
       </Col>
       <Col xs={24} lg={12}>
@@ -85,10 +72,6 @@ export const SignInPage = () => {
           style={{ height: '100%', padding: '2rem' }}
         >
           <Title className="m-0">Login</Title>
-          <Flex gap={4}>
-            <Text>Don't have an account?</Text>
-            <Link href={PATH_AUTH.signup}>Create an account here</Link>
-          </Flex>
           <Form
             name="sign-up-form"
             layout="vertical"
@@ -147,17 +130,6 @@ export const SignInPage = () => {
               </Flex>
             </Form.Item>
           </Form>
-          <Divider className="m-0">or</Divider>
-          <Flex
-            vertical={isMobile}
-            gap="small"
-            wrap="wrap"
-            style={{ width: '100%' }}
-          >
-            <Button icon={<GoogleOutlined />}>Sign in with Google</Button>
-            <Button icon={<FacebookFilled />}>Sign in with Facebook</Button>
-            <Button icon={<TwitterOutlined />}>Sign in with Twitter</Button>
-          </Flex>
         </Flex>
       </Col>
     </Row>
