@@ -48,7 +48,7 @@ export const PasswordResetPage = () => {
   };
 
   return (
-    <Row style={{ minHeight: isMobile ? 'auto' : '100vh', overflow: 'scroll', maxHeight:'100vh' }}>
+    <Row style={{ minHeight: isMobile ? 'auto' : '97vh', overflow: 'scroll', maxHeight:'100vh' }}>
       <Col xs={24} lg={12}>
         <Flex
           vertical

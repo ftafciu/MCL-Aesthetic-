@@ -14,6 +14,7 @@ import { useMediaQuery } from 'react-responsive';
 import { PATH_AUTH, PATH_DASHBOARD } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { login } from "./scripts/login-scripts.ts";
 import Sticker from "../../assets/login-img.jpg";
 
 const { Title, Link } = Typography;
@@ -33,25 +34,19 @@ export const SignInPage = () => {
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values: any) => {
-    console.log('Success:', values);
     setLoading(true);
-
-    message.open({
-      type: 'success',
-      content: 'Login successful',
-    });
-
-    setTimeout(() => {
-      navigate(PATH_DASHBOARD.default);
-    }, 5000);
+    login(navigate, message, values.email, values.password);
   };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+    message.open({
+      type: 'error',
+      content: 'Login failed!'
+    })
   };
 
   return (
-    <Row style={{ minHeight: isMobile ? 'auto' : '100vh', overflow: 'scroll', maxHeight: '100vh' }}>
+    <Row style={{ minHeight: isMobile ? 'auto' : '97vh', overflow: 'scroll', maxHeight: '100vh' }}>
       <Col xs={24} lg={12}>
         <Flex
           vertical
@@ -78,8 +73,8 @@ export const SignInPage = () => {
             labelCol={{ span: 24 }}
             wrapperCol={{ span: 24 }}
             initialValues={{
-              email: 'demo@email.com',
-              password: 'demo123',
+              email: '',
+              password: '',
               remember: true,
             }}
             onFinish={onFinish}

@@ -39,6 +39,7 @@ import { PATH_LANDING } from '../../constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../../redux/theme/themeSlice.ts';
 import { RootState } from '../../redux/store.ts';
+import { logout } from '../../pages/authentication/scripts/login-scripts.ts';
 const { Content } = Layout;
 
 type AppLayoutProps = {
@@ -84,14 +85,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       icon: <LogoutOutlined />,
       danger: true,
       onClick: () => {
-        message.open({
-          type: 'loading',
-          content: 'signing you out',
-        });
-
-        setTimeout(() => {
-          navigate(PATH_LANDING.root);
-        }, 1000);
+        logout(navigate, message);
       },
     },
   ];
