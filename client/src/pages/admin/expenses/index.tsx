@@ -5,15 +5,13 @@ import { Alert, Button, Card, Col, Form, Input, Row, Table } from "antd";
 import useFetchData from "../../../hooks/useFetchData";
 import { CSSProperties } from "react";
 import { DatePicker } from 'antd';
-import type { InputNumberProps } from 'antd';
-import { InputNumber, Space } from 'antd';
+import { InputNumber } from 'antd';
 
 const { RangePicker } = DatePicker;
 
 const cardStyles: CSSProperties = {
     height: '100%',
 };
-
 
 type FieldType = {
     name?: string;
