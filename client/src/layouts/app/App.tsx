@@ -178,12 +178,6 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               />
             </Flex>
             <Flex align="center" gap="small">
-              <Tooltip title="Apps">
-                <Button icon={<AppstoreOutlined />} type="text" size="large" />
-              </Tooltip>
-              <Tooltip title="Messages">
-                <Button icon={<MessageOutlined />} type="text" size="large" />
-              </Tooltip>
               <Tooltip title="Theme">
                 <Switch
                   className=" hidden sm:inline py-1"
@@ -196,7 +190,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
               <Dropdown menu={{ items }} trigger={['click']}>
                 <Flex>
                   <img
-                    src="/me.jpg"
+                    src="/mcl-logo.jpg"
                     alt="user profile photo"
                     height={36}
                     width={36}
