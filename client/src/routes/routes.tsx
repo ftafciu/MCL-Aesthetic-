@@ -1,4 +1,4 @@
-import { createBrowserRouter, useLocation } from 'react-router-dom';
+import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom';
 import {
   AccountDeactivePage,
   BiddingDashboardPage,
@@ -48,6 +48,7 @@ import { AboutPage } from '../pages/About.tsx';
 import { Dashboard } from '../pages/admin/dashboard/index.tsx';
 import ListContent from '../pages/admin/clients/content/ListContent.tsx';
 import ExpensePage from '../pages/admin/expenses/index.tsx';
+import SafeRoute from '../pages/authentication/SafeRoute.tsx';
 
 // Custom scroll restoration function
 export const ScrollToTop: React.FC = () => {
@@ -88,7 +89,7 @@ const router = createBrowserRouter([
       {
         index: true,
         path: '',
-        element: <HomePage />,
+        element: <Navigate to="/auth/signin" replace />,
       },
     ],
   },
@@ -100,7 +101,7 @@ const router = createBrowserRouter([
       {
         index: true,
         path: "",
-        element: <Dashboard />
+        element: <SafeRoute><Dashboard /></SafeRoute>
       }
     ]
   },
@@ -112,7 +113,7 @@ const router = createBrowserRouter([
       {
         index: true,
         path: "",
-        element: <ListContent />
+        element: <SafeRoute><ListContent /></SafeRoute>
       }
     ]
   },
@@ -124,7 +125,7 @@ const router = createBrowserRouter([
       {
         index: true,
         path: "",
-        element: <ExpensePage />
+        element: <SafeRoute><ExpensePage /></SafeRoute>
       }
     ]
   },
@@ -262,7 +263,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'signin',
-        element: <SignInPage />,
+        element: <SafeRoute><SignInPage /></SafeRoute>,
       },
       {
         path: 'welcome',
@@ -274,7 +275,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'password-reset',
-        element: <PasswordResetPage />,
+        element: <SafeRoute><PasswordResetPage /></SafeRoute>,
       },
       {
         path: 'account-delete',

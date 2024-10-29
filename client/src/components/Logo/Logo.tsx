@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CSSProperties } from 'react';
 
 import './styles.css';
+import { COLOR } from '../../App';
 
 type LogoProps = {
   color: CSSProperties['color'];
@@ -28,10 +29,9 @@ export const Logo = ({
   } = theme.useToken();
 
   return asLink ? (
-    <Link to={href || '#'} className="logo-link">
       <Flex gap={others.gap || 'small'} align="center" {...others}>
         <img
-          src="/logo-no-background.png"
+          src="/mcl-logo.jpg"
           alt="design sparx logo"
           height={imgSize?.h || 48}
         />
@@ -39,17 +39,17 @@ export const Logo = ({
           level={5}
           type="secondary"
           style={{
-            color,
+            color: COLOR['100'],
             margin: 0,
             padding: `4px 8px`,
             backgroundColor: bgColor,
             borderRadius,
+            fontFamily: "DynaPuff"
           }}
         >
-          Antd Admin
+          MCL aestethics
         </Typography.Title>
       </Flex>
-    </Link>
   ) : (
     <Flex gap={others.gap || 'small'} align="center" {...others}>
       <img

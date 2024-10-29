@@ -4,10 +4,14 @@ const cors = require("cors");
 const fs = require("fs");
 require("dotenv").config();
 const { connectToDb } = require("./database/db");
+const authRouter = require("./routers/authorization");
+const loginRouter = require("./routers/logInRouter");
+// const userProxy = require('./controllers/userProxy');
 
 const allowedOrigins = [
   "http://localhost:3456",
   "http://localhost:3000",
+  'http://localhost:5173',
   "postman://app",
 ];
 
@@ -26,13 +30,16 @@ app.use(
   })
 );
 
+app.use("/login", loginRouter);
+app.use("/auth", authRouter);
+
 const port = 5443;
 
 connectToDb(async (err) => {
   if (err) {
     console.log("Sth went wrong with the server");
   } else {
-    // userProxy.createUser({body: { gmail: 'acifliku6@gmail.com', password: '123456', role: 'admin', name: 'Aurela', surname: 'Kalemi' }}, {})
+    // userProxy.createUser({body: { gmail: 'mcl-admin@gmail.com', password: '123456', role: 'admin', name: 'Selda', surname: 'Tafciu' }}, {})
     app.listen(port, () => {
       console.log(`Listening on port ${port}`);
     });

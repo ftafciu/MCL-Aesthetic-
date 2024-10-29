@@ -77,6 +77,8 @@ const ERROR_ITEMS = [
   { title: '503', path: PATH_ERROR.error503 },
 ];
 
+const BACKEND_URL = 'http://localhost:5443';
+
 export {
   PATH_CALENDAR,
   PATH_USER_MGMT,
@@ -111,4 +113,5 @@ export {
   AUTHENTICATION_ITEMS,
   ERROR_ITEMS,
   PATH_ABOUT,
+  BACKEND_URL
 };
