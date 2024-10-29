@@ -22,12 +22,17 @@ export const getExpenses = async (navigator: any, message: any) => {
 }
 
 export const getExpensesByTimeRange = async (navigator: any, message: any, startDate: Date, endDate: Date) => {
+    const startDate1 = new Date(startDate);
+    const endDate1 = new Date(endDate);
     const response = await fetch(`${BACKEND_URL}/expenses/getByTimeRange`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ firstDate: startDate, lastDate: endDate }),
+        body: JSON.stringify({
+            firstDate: new Date(Date.UTC(startDate1.getFullYear(), startDate1.getMonth(), startDate1.getDate(), 0, 0, 0)),
+            lastDate: new Date(Date.UTC(endDate1.getFullYear(), endDate1.getMonth(), endDate1.getDate(), 23, 59, 59))
+        }),
         credentials: 'include'
     });
     if (response.status === 200) {
@@ -44,36 +49,14 @@ export const getExpensesByTimeRange = async (navigator: any, message: any, start
     }
 }
 
-const validateInfo = (name: string, quantity: number, date: Date, message: any) => {
-    if(!name) {
-        message.open({
-            type: 'error',
-            content: 'Expense name is missing!'
-        })
-        return false;
-    } else if(!quantity) {
-        message.open({
-            type: 'error',
-            content: 'You need to enter a price!'
-        })
-        return false;
-    } else if(!date) {
-        message.open({
-            type: 'error',
-            content: 'Please select the date!'
-        })
-        return false;
-    }
-    return true;
-}
-
 export const createExpense = async (navigator: any, message: any, name: string, quantity: number, date: Date, dependency: any) => {
+    const tempDate = new Date(date);
     const response = await fetch(`${BACKEND_URL}/expenses/create`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name, quantity, date }),
+        body: JSON.stringify({ name, quantity, date: new Date(Date.UTC(tempDate.getFullYear(), tempDate.getMonth(), tempDate.getDate(), tempDate.getHours(), tempDate.getMinutes(), tempDate.getSeconds())) }),
         credentials: 'include'
     });
     if (response.status === 201) {

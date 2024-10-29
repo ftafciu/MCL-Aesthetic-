@@ -5,7 +5,7 @@ import { Button, Card, Col, Form, Input, message, Row, Table } from "antd";
 import { CSSProperties, useEffect, useState } from "react";
 import { DatePicker } from 'antd';
 import { InputNumber } from 'antd';
-import { createExpense, deleteExpense, getExpenses } from "./scripts/scripts";
+import { createExpense, deleteExpense, getExpenses, getExpensesByTimeRange } from "./scripts/scripts";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../../../components/ConfirmModal";
 
@@ -28,6 +28,7 @@ function ExpensePage() {
     const [messageApi, contextHolder] = message.useMessage();
     const [expensesUpdated, setExpensesUpdated] = useState(false);
     const [form] = Form.useForm();
+    const [dateFilter, setDateFilter] = useState<null | any>(null);
     const CATEGORIES_COLUMNS = [
         {
             title: 'Name of expense',
@@ -57,12 +58,20 @@ function ExpensePage() {
     ];
 
     useEffect(() => {
-        getExpenses(navigator, messageApi).then(data => {
-            setData(data);
-            setLoading(false);
-        })
+        setLoading(true);
+        if(dateFilter) {
+            getExpensesByTimeRange(navigator, messageApi, dateFilter.startDate, dateFilter.endDate).then(data => {
+                setData(data);
+                setLoading(false);
+            })
+        } else {
+            getExpenses(navigator, messageApi).then(data => {
+                setData(data);
+                setLoading(false);
+            })
+        }
         setExpensesUpdated(false);
-    }, [expensesUpdated])
+    }, [expensesUpdated, dateFilter])
 
     return (
         <div>
@@ -89,7 +98,13 @@ function ExpensePage() {
             />
             <Row>
                 <Col span={11} style={{ marginRight: '30px' }}>
-                    <RangePicker style={{ width: '100%', marginBottom: '10px' }} />
+                    <RangePicker style={{ width: '100%', marginBottom: '10px' }} onChange={(dates, dateStrings)=>{
+                        if(dates) {
+                            setDateFilter({ startDate: dates?.[0], endDate: dates?.[1] })
+                        } else {
+                            setDateFilter(null);
+                        }
+                    }}/>
                     <Card title="Expenses list" style={cardStyles}>
                         <Table
                             columns={CATEGORIES_COLUMNS}
