@@ -6,6 +6,7 @@ require("dotenv").config();
 const { connectToDb } = require("./database/db");
 const authRouter = require("./routers/authorization");
 const loginRouter = require("./routers/logInRouter");
+const expensesRouter = require('./routers/expensesRouter');
 // const userProxy = require('./controllers/userProxy');
 
 const allowedOrigins = [
@@ -32,6 +33,7 @@ app.use(
 
 app.use("/login", loginRouter);
 app.use("/auth", authRouter);
+app.use('/expenses', expensesRouter);
 
 const port = 5443;
 
