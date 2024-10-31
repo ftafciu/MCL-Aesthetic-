@@ -8,10 +8,12 @@ import {
   GithubOutlined,
   IdcardOutlined,
   InfoCircleOutlined,
+  MenuOutlined,
   PieChartOutlined,
   ProductOutlined,
   SecurityScanOutlined,
   SnippetsOutlined,
+  UserAddOutlined,
   UserOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
@@ -56,7 +58,10 @@ const getItem = (
 
 const items: MenuProps['items'] = [
   getItem(<Link to={PATH_DASHBOARD_ADMIN.root}>Dashboard</Link>, 'dashboard', <PieChartOutlined />),
-  getItem(<Link to={PATH_CLIENTS.root}>Clients</Link>, 'clients', <UserSwitchOutlined />),
+  getItem('Clients', 'client', <UserSwitchOutlined />, [
+    getItem(<Link to={PATH_CLIENTS.root}>Clients list</Link>, 'clients', <MenuOutlined />),
+    getItem(<Link to={PATH_CLIENTS.create}>Create client</Link>, 'create_client', <UserAddOutlined />)
+  ]),
   getItem(<Link to={PATH_EXPENSES.root}>Expenses</Link>, 'expenses', <DollarOutlined />),
   getItem('Dashboards', 'dashboards', <PieChartOutlined />, [
     getItem(<Link to={PATH_DASHBOARD.default}>Default</Link>, 'default', null),

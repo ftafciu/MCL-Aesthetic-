@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const clientSchema = new Schema({
   name: { type: String, required: true },
   surname: { type: String, required: true },
+  email: { type: String, required: true },
   phoneNumber: {
     type: String, required: true, validate: {
       validator: function (value) {
@@ -14,6 +15,7 @@ const clientSchema = new Schema({
     }, unique: true
   },
   age: { type: Number, required: true },
+  birthday: { type: Date, required: true }
 });
 
 const Client = mongoose.model("Client", clientSchema);

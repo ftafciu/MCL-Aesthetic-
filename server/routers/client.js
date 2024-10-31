@@ -44,7 +44,7 @@ app.delete("/:clientId", (req, res) => {
 
 app.post("/create", (req, res) => {
     login_controller.authorize(req, res, async () => {
-        const response = await clientRepo.createClient(req.body.client);
+        const response = await clientRepo.createClient(req.body);
         if (response.result) {
             res.status(200).json({ message: response.message });
         } else {

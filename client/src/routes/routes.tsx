@@ -49,6 +49,8 @@ import { Dashboard } from '../pages/admin/dashboard/index.tsx';
 import ListContent from '../pages/admin/clients/content/ListContent.tsx';
 import ExpensePage from '../pages/admin/expenses/index.tsx';
 import SafeRoute from '../pages/authentication/SafeRoute.tsx';
+import CreateContent from '../pages/admin/clients/content/CreateContent.tsx';
+import EditContent from '../pages/admin/clients/content/EditContent.tsx';
 
 // Custom scroll restoration function
 export const ScrollToTop: React.FC = () => {
@@ -114,6 +116,14 @@ const router = createBrowserRouter([
         index: true,
         path: "",
         element: <SafeRoute><ListContent /></SafeRoute>
+      },
+      {
+        path: 'create',
+        element: <SafeRoute><CreateContent /></SafeRoute>
+      },
+      {
+        path: 'edit/:id',
+        element: <SafeRoute><EditContent /></SafeRoute>
       }
     ]
   },

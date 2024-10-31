@@ -36,7 +36,7 @@ export const PATH_LANDING = {
 };
 
 export const PATH_DASHBOARD_ADMIN = {
-  root: ROOT_DASHBOARD
+  root: ROOT_DASHBOARD,
 }
 
 export const PATH_DASHBOARD = {
@@ -52,7 +52,9 @@ export const PATH_DASHBOARD = {
 };
 
 export const PATH_CLIENTS = {
-  root: ROOT_CLIENT
+  root: ROOT_CLIENT,
+  create: path(ROOT_CLIENT, '/create'),
+  edit: path(ROOT_CLIENT, 'edit/:id')
 };
 
 export const PATH_EXPENSES = {
