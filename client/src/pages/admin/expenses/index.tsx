@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { PageHeader } from "../../../components/PageHeader/PageHeader";
-import { CheckCircleOutlined, DeleteOutlined, HomeOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, HomeOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Form, Input, message, Row, Table } from "antd";
 import { CSSProperties, useEffect, useState } from "react";
 import { DatePicker } from 'antd';
