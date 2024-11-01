@@ -15,7 +15,9 @@ const clientSchema = new Schema({
     }, unique: true
   },
   age: { type: Number, required: true },
-  birthday: { type: Date, required: true }
+  birthday: { type: Date, required: true },
+  status: { type: String, enum: ['new', 'in-progress', 'done'], required: true, default: 'new' },
+  pdfId: { type: String, required: false }
 });
 
 const Client = mongoose.model("Client", clientSchema);

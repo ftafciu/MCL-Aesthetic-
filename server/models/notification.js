@@ -20,6 +20,12 @@ const notificationSchema = new Schema({
       );
     },
   },
+  status: {
+    type: String,
+    enum: ['cleared', 'uncleared'],
+    required: true,
+    default: 'uncleared'
+  }
 });
 
 const Notification = mongoose.model("Notification", notificationSchema);
