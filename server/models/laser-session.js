@@ -13,7 +13,8 @@ const BodyPartsSchema = new mongoose.Schema({
 const laserSchema = new mongoose.Schema({
     client: { type: mongoose.Schema.Types.ObjectId, ref: 'client' },
     date: { type: Date, required: true },
-    bodyParts: { type: BodyPartsSchema, required: true }
+    bodyParts: { type: BodyPartsSchema, required: true },
+    type: { type: String, required: true, default: "Laser treatment" }
 });
 
 const laserModel = mongoose.model("LaserSession", laserSchema);

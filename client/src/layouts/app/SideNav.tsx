@@ -4,13 +4,16 @@ import {
   AppstoreAddOutlined,
   BranchesOutlined,
   BugOutlined,
+  CalendarOutlined,
   DollarOutlined,
+  FieldTimeOutlined,
   GithubOutlined,
   IdcardOutlined,
   InfoCircleOutlined,
   MenuOutlined,
   PieChartOutlined,
   ProductOutlined,
+  ScheduleOutlined,
   SecurityScanOutlined,
   SnippetsOutlined,
   UserAddOutlined,
@@ -34,7 +37,7 @@ import {
   PATH_USER_PROFILE,
 } from '../../constants';
 import { COLOR } from '../../App.tsx';
-import { PATH_EXPENSES } from '../../constants/routes.ts';
+import { PATH_EXPENSES, PATH_SESSION } from '../../constants/routes.ts';
 
 const { Sider } = Layout;
 
@@ -61,6 +64,10 @@ const items: MenuProps['items'] = [
   getItem('Clients', 'client', <UserSwitchOutlined />, [
     getItem(<Link to={PATH_CLIENTS.root}>Clients list</Link>, 'clients', <MenuOutlined />),
     getItem(<Link to={PATH_CLIENTS.create}>Create client</Link>, 'create_client', <UserAddOutlined />)
+  ]),
+  getItem('Sessions', 'sessions', <FieldTimeOutlined />, [
+    getItem(<Link to={PATH_SESSION.root}>Sessions list</Link>, 'sessions', <CalendarOutlined />),
+    getItem(<Link to={PATH_SESSION.create}>Create session</Link>, 'create_session', <ScheduleOutlined />)
   ]),
   getItem(<Link to={PATH_EXPENSES.root}>Expenses</Link>, 'expenses', <DollarOutlined />),
   getItem('Dashboards', 'dashboards', <PieChartOutlined />, [

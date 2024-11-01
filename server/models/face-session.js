@@ -7,7 +7,8 @@ const faceSessionSchema = new mongoose.Schema({
         type: String,
         enum: ['cleaning', 'mesotherapy', 'dermopen', 'fillers', 'botox'],
         required: true
-    }
+    },
+    type: { type: String, required: true, default: "Face treatment" }
 });
 
 const faceSession = mongoose.model("FaceSession", faceSessionSchema);
