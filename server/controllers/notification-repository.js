@@ -37,12 +37,33 @@ const getNotifications = async () => {
     }
 };
 
-const changeNotificationStatus = async () => {
+const changeNotificationStatus = async (notificationId) => {
+    try {
+        const edited = await Notification.findByIdAndUpdate(notificationId, { status: "cleared" });
+        if (!edited) {
+            throw new Error("The notification does not exist!");
+        }
+        return { result: true, message: "Notification cleared!" };
+    } catch (error) {
+        return { result: false, message: error.message };
+    }
+}
 
+const postponeNotification = async (notificationId, newDate) => {
+    try {
+        const edited = await Notification.findByIdAndUpdate(notificationId, { date: newDate });
+        if (!edited) {
+            throw new Error("The notification does not exist!");
+        }
+        return { result: true, message: "Notification postponed!" };
+    } catch (error) {
+        return { result: false, message: error.message };
+    }
 }
 
 module.exports = {
     createNotification,
     getNotifications,
-    changeNotificationStatus
+    changeNotificationStatus,
+    postponeNotification
 }
