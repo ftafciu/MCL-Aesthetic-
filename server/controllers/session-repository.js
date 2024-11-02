@@ -120,7 +120,7 @@ const filterSessionsByDate = async (startDate, endDate) => {
     try {
         const now = new Date(startDate);
         const then = new Date(endDate);
-        const startDate = new Date(
+        const startDate1 = new Date(
             Date.UTC(
                 now.getFullYear(),
                 now.getMonth(),
@@ -130,7 +130,7 @@ const filterSessionsByDate = async (startDate, endDate) => {
                 0
             )
         );
-        const endDate = new Date(
+        const endDate1 = new Date(
             Date.UTC(
                 then.getFullYear(),
                 then.getMonth(),
@@ -141,13 +141,13 @@ const filterSessionsByDate = async (startDate, endDate) => {
             )
         );
         const faceSessions = await FaceSession.find({
-            date: { $gte: startDate, $lte: endDate }
+            date: { $gte: startDate1, $lte: endDate1 }
         });
         const bodySessions = await BodySession.find({
-            date: { $gte: startDate, $lte: endDate }
+            date: { $gte: startDate1, $lte: endDate1 }
         });
         const laserSessions = await LaserSession.find({
-            date: { $gte: startDate, $lte: endDate }
+            date: { $gte: startDate1, $lte: endDate1 }
         });
         return { result: true, sessions: [...faceSessions, ...bodySessions, ...laserSessions] }
     } catch (error) {

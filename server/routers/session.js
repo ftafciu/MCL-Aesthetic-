@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const notificationRepo = require('../controllers/notification-repository.js');
 const sessionRepo = require("../controllers/session-repository.js");
+const login_controller = require('../controllers/userProxy.js');
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -44,7 +45,7 @@ app.get('/all-sessions', (req, res) => {
 
 app.post('/filter-by-date', (req, res) => {
     login_controller.authorize(req, res, async () => {
-        const response = await sessionRepo.filterSessionsByDate(req.body.startDate, req.body.endDate);
+        const response = await sessionRepo.filterSessionsByDate(req.body.firstDate, req.body.lastDate);
         if (response.result) {
             res.status(200).json(response.sessions);
         } else {
@@ -66,7 +67,7 @@ app.post('/create', (req, res) => {
         if (response?.result) {
             res.status(200).json({ message: response?.message });
         } else {
-            res.status(400).json({ message: response?.message })
+            res.status(400).json({ message: response?.message });
         }
     });
 });

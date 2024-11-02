@@ -10,14 +10,15 @@ type Props = {
   data?: DeliveryRequest[];
   loading?: boolean;
   error?: ReactNode;
+  seeAll?: boolean;
 } & CardProps;
 
-export const DeliveryRequestCard = ({ data, ...others }: Props) => {
+export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
   return (
     <Card
       title="Recent request"
       className="delivery-request-card card"
-      extra={<Button>See all</Button>}
+      extra={seeAll && <Button>See all</Button>}
       {...others}
     >
       <List
