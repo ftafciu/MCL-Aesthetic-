@@ -40,11 +40,11 @@ const deleteSession = async (sessionId, sessionType) => {
     try {
         let session = null;
         if (sessionType === 'face') {
-            session = await FaceSession.findById(sessionId);
+            session = await FaceSession.findById(sessionId).populate('client');
         } else if (sessionType === 'body') {
-            session = await BodySession.findById(sessionId);
+            session = await BodySession.findById(sessionId).populate('client');
         } else {
-            session = await LaserSession.findById(sessionId);
+            session = await LaserSession.findById(sessionId).populate('client');
         }
         if (!session) {
             throw new Error("Session does not exist!");
@@ -81,13 +81,13 @@ const getDailySessions = async () => {
         );
         const faceSessions = await FaceSession.find({
             date: { $gte: startDate, $lte: endDate }
-        });
+        }).populate('client');
         const bodySessions = await BodySession.find({
             date: { $gte: startDate, $lte: endDate }
-        });
+        }).populate('client');
         const laserSessions = await LaserSession.find({
             date: { $gte: startDate, $lte: endDate }
-        });
+        }).populate('client');
         return { result: true, sessions: [...faceSessions, ...bodySessions, ...laserSessions] }
     } catch (error) {
         return { result: false, message: error.message };
@@ -96,9 +96,9 @@ const getDailySessions = async () => {
 
 const getClientSessions = async (clientId) => {
     try {
-        const faceSessions = await FaceSession.find({ client: clientId });
-        const bodySessions = await BodySession.find({ client: clientId });
-        const laserSessions = await LaserSession.find({ client: clientId });
+        const faceSessions = await FaceSession.find({ client: clientId }).populate('client');
+        const bodySessions = await BodySession.find({ client: clientId }).populate('client');
+        const laserSessions = await LaserSession.find({ client: clientId }).populate('client');
         return { result: true, sessions: [...faceSessions, ...bodySessions, ...laserSessions] }
     } catch (error) {
         return { result: false, message: error.message };
@@ -107,9 +107,9 @@ const getClientSessions = async (clientId) => {
 
 const getAllSessions = async () => {
     try {
-        const faceSessions = await FaceSession.find({});
-        const bodySessions = await BodySession.find({});
-        const laserSessions = await LaserSession.find({});
+        const faceSessions = await FaceSession.find({}).populate('client');
+        const bodySessions = await BodySession.find({}).populate('client');
+        const laserSessions = await LaserSession.find({}).populate('client');
         return { result: true, sessions: [...faceSessions, ...bodySessions, ...laserSessions] }
     } catch (error) {
         return { result: false, message: error.message };
@@ -142,13 +142,13 @@ const filterSessionsByDate = async (startDate, endDate) => {
         );
         const faceSessions = await FaceSession.find({
             date: { $gte: startDate1, $lte: endDate1 }
-        });
+        }).populate('client');
         const bodySessions = await BodySession.find({
             date: { $gte: startDate1, $lte: endDate1 }
-        });
+        }).populate('client');
         const laserSessions = await LaserSession.find({
             date: { $gte: startDate1, $lte: endDate1 }
-        });
+        }).populate('client');
         return { result: true, sessions: [...faceSessions, ...bodySessions, ...laserSessions] }
     } catch (error) {
         return { result: false, message: error.message };

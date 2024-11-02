@@ -7,7 +7,7 @@ import { ReactNode } from 'react';
 import { CalendarOutlined } from '@ant-design/icons';
 
 type Props = {
-  data?: DeliveryRequest[];
+  data?: any[];
   loading?: boolean;
   error?: ReactNode;
   seeAll?: boolean;
@@ -16,7 +16,7 @@ type Props = {
 export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
   return (
     <Card
-      title="Recent request"
+      title="Sessions list"
       className="delivery-request-card card"
       extra={seeAll && <Button>See all</Button>}
       {...others}
@@ -33,7 +33,7 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
         }}
         dataSource={data}
         renderItem={(item) => (
-          <List.Item key={item.id}>
+          <List.Item key={item._id}>
             <Space style={{ justifyContent: 'space-between', width: '100%' }}>
               <Flex vertical gap="small">
                 <Typography.Text strong style={{ textTransform: 'capitalize' }}>
@@ -43,15 +43,7 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
                   color="geekblue"
                   text={
                     <Typography.Text>
-                      From: {item.delivery_location}
-                    </Typography.Text>
-                  }
-                />
-                <Badge
-                  color="magenta"
-                  text={
-                    <Typography.Text>
-                      To: {item.pickup_location}
+                      Session type: {item.type}
                     </Typography.Text>
                   }
                 />
@@ -59,17 +51,17 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
               <Flex vertical align="flex-end" gap="small">
                 <Flex gap={4} align="center">
                   <CalendarOutlined />
-                  <Typography.Text>{item.delivery_date}</Typography.Text>
+                  <Typography.Text>{item.date}</Typography.Text>
                 </Flex>
                 <UserAvatar
-                  fullName={item.driver_name}
+                  fullName={item.client.name}
                   align="flex-end"
                   textWidth="auto"
                 />
                 <Flex gap={4}>
                   <Typography.Text>Contact:</Typography.Text>
-                  <Typography.Link href={`tel:${item.contact_number}`}>
-                    {item.contact_number}
+                  <Typography.Link href={`tel:${item.client.phoneNumber}`}>
+                    {item.client.phoneNumber}
                   </Typography.Link>
                 </Flex>
               </Flex>

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     Card,
     DeliveryRequestCard,
@@ -20,30 +20,38 @@ import {
     CarouselProps,
     Col,
     Flex,
+    message,
     Row,
     Typography,
 } from 'antd';
 import { HomeOutlined, PieChartOutlined } from '@ant-design/icons';
 import { DASHBOARD_ITEMS } from '../../../constants';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useStylesContext } from '../../../context';
 import { useFetchData } from '../../../hooks';
 import { Projects } from '../../../types';
 import CountUp from 'react-countup';
+import { getDailySessions } from '../sessions/scripts/scripts';
 
 export const Dashboard = () => {
     const stylesContext = useStylesContext();
+    const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
     const {
         data: projectsData,
         error: projectsDataError,
         loading: projectsDataLoading,
     } = useFetchData('../mocks/Projects.json');
-    const {
-        data: trucksDeliveryRequestData,
-        loading: trucksDeliveryRequestDataLoading,
-        error: trucksDeliveryRequestDataError,
-    } = useFetchData('../mocks/TruckDeliveryRequest.json');
+    const [sessionData, setSessionData] = useState([]);
+
+    useEffect(() => {
+        getDailySessions(navigate, messageApi).then(data => {
+            if (data) {
+                setSessionData(data);
+            }
+        })
+    }, [])
 
     return (
         <div>
@@ -124,9 +132,8 @@ export const Dashboard = () => {
                 </Col>
                 <Col xs={24} xl={12}>
                     <DeliveryRequestCard
-                        data={trucksDeliveryRequestData}
-                        loading={trucksDeliveryRequestDataLoading}
-                        error={trucksDeliveryRequestDataError}
+                        data={sessionData}
+                        seeAll={true}
                     />
                 </Col>
             </Row>
