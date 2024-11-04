@@ -3,7 +3,7 @@ import { DeliveryRequest } from '../../../../types';
 import { Card, UserAvatar } from '../../../index.ts';
 
 import './styles.css';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { CalendarOutlined } from '@ant-design/icons';
 
 type Props = {
@@ -14,6 +14,7 @@ type Props = {
 } & CardProps;
 
 export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
+
   return (
     <Card
       title="Sessions list"
@@ -37,7 +38,7 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
             <Space style={{ justifyContent: 'space-between', width: '100%' }}>
               <Flex vertical gap="small">
                 <Typography.Text strong style={{ textTransform: 'capitalize' }}>
-                  {item.name}
+                  {item?.name}
                 </Typography.Text>
                 <Badge
                   color="geekblue"
@@ -54,7 +55,7 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
                   <Typography.Text>{item.date}</Typography.Text>
                 </Flex>
                 <UserAvatar
-                  fullName={item.client.name}
+                  fullName={`${item.client.name} ${item.client.surname}`}
                   align="flex-end"
                   textWidth="auto"
                 />

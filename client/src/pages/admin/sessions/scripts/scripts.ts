@@ -97,7 +97,11 @@ export const createSession = async (navigator: any, message: any, sessionType: s
         credentials: 'include'
     });
     if (response.status === 200) {
-        return await response.json();
+        message.open({
+            type: 'success',
+            message: 'Session created successfully!'
+        });
+        navigator('/sessions')
     } else if (response.status === 401) {
         logout(navigator, message);
     } else {

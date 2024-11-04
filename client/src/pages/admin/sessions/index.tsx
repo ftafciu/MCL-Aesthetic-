@@ -39,7 +39,7 @@ const { RangePicker } = DatePicker;
 
 function SessionPage() {
     const stylesContext = useStylesContext();
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<any>([]);
     const [dateFilter, setDateFilter] = useState<null | any>(null);
     const [dataUpdated, setDataUpdated] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -54,6 +54,7 @@ function SessionPage() {
             })
         } else {
             getSessions(navigator, messageApi).then(data => {
+                console.log(data);
                 setData(data);
                 setLoading(false);
             })

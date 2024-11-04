@@ -21,13 +21,34 @@ export const getClients = async (navigator: any, message: any) => {
     }
 }
 
-export const createClient = async (navigator: any, message: any, name: string, surname: string, email: string, phoneNumber: string, birthday: Date) => {
+export const createClient = async (
+    navigator: any,
+    message: any,
+    name: string,
+    surname: string,
+    email: string,
+    phoneNumber: string,
+    birthday: Date,
+    bodyParts: any,
+    faceTreatment: any
+) => {
     const response = await fetch(`${BACKEND_URL}/clients/create`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name, surname, email, phoneNumber, birthday }),
+        body: JSON.stringify({
+            name,
+            surname,
+            email,
+            phoneNumber,
+            birthday,
+            plannedTreatment: {
+                plannedFaceTreatment: faceTreatment,
+                plannedBodyParts: bodyParts,
+                plannedBodyTreatment: false
+            }
+        }),
         credentials: 'include'
     });
     if (response.status === 200) {
