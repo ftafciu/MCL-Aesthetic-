@@ -1,10 +1,10 @@
 import { Badge, Button, CardProps, Flex, List, Space, Typography } from 'antd';
-import { DeliveryRequest } from '../../../../types';
 import { Card, UserAvatar } from '../../../index.ts';
 
 import './styles.css';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { CalendarOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   data?: any[];
@@ -13,13 +13,23 @@ type Props = {
   seeAll?: boolean;
 } & CardProps;
 
+const generateBodyPartsString = (bodyParts: any) => {
+  let bodyPartsString = ''
+  for (let key in bodyParts) {
+    if (bodyParts[key] && key !== '_id')
+      bodyPartsString += `${key} `;
+  }
+  return bodyPartsString;
+}
+
 export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
+  const navigate = useNavigate();
 
   return (
     <Card
       title="Sessions list"
       className="delivery-request-card card"
-      extra={seeAll && <Button>See all</Button>}
+      extra={seeAll && <Button onClick={() => navigate('/sessions')}>See all</Button>}
       {...others}
     >
       <List
@@ -41,6 +51,14 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
                   {item?.name}
                 </Typography.Text>
                 <Badge
+                  color="red"
+                  text={
+                    <Typography.Text>
+                      Client status: {item.client.status}
+                    </Typography.Text>
+                  }
+                />
+                <Badge
                   color="geekblue"
                   text={
                     <Typography.Text>
@@ -48,11 +66,33 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
                     </Typography.Text>
                   }
                 />
+                {
+                  item.treatment &&
+                  <Badge
+                    color="green"
+                    text={
+                      <Typography.Text>
+                        Treatments: {generateBodyPartsString(item.treatment)}
+                      </Typography.Text>
+                    }
+                  />
+                }
+                {
+                  item.bodyParts &&
+                  <Badge
+                    color="green"
+                    text={
+                      <Typography.Text>
+                        Bpdy parts: {generateBodyPartsString(item.bodyParts)}
+                      </Typography.Text>
+                    }
+                  />
+                }
               </Flex>
               <Flex vertical align="flex-end" gap="small">
                 <Flex gap={4} align="center">
                   <CalendarOutlined />
-                  <Typography.Text>{item.date}</Typography.Text>
+                  <Typography.Text>{item.date.slice(0, 10)}</Typography.Text>
                 </Flex>
                 <UserAvatar
                   fullName={`${item.client.name} ${item.client.surname}`}

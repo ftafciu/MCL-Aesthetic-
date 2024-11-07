@@ -5,6 +5,7 @@ import {
   Descriptions,
   DescriptionsProps,
   Image,
+  message,
   Row,
   Tabs,
   TabsProps,
@@ -20,51 +21,7 @@ const { Link } = Typography;
 
 import './styles.css';
 import { useEffect, useState } from 'react';
-
-const DESCRIPTION_ITEMS: DescriptionsProps['items'] = [
-  {
-    key: 'full-name',
-    label: 'Name',
-    children: <span>Kelvin Kiptum Kiprop</span>,
-  },
-  {
-    key: 'job-title',
-    label: 'Job title',
-    children: <span>Software Engineer</span>,
-  },
-  {
-    key: 'email',
-    label: 'Email',
-    children: (
-      <Link href="mailto:kelvin.kiprop96@gmail.com">
-        kelvin.kiprop96@gmail.com
-      </Link>
-    ),
-  },
-  {
-    key: 'telephone',
-    label: 'Phone',
-    children: <Link href="tel:+254706094433">+254 706 094 4433</Link>,
-  },
-  {
-    key: 'github',
-    label: 'Github',
-    children: (
-      <Link href="https://github.com/kelvink96" target="_blank">
-        kelvink96
-      </Link>
-    ),
-  },
-  {
-    key: 'twitter',
-    label: 'Twitter',
-    children: (
-      <Link href="https://twitter.com/kelvink_96" target="_blank">
-        @kelvink_96
-      </Link>
-    ),
-  },
-];
+import { getMyData } from './scripts';
 
 const TAB_ITEMS: TabsProps['items'] = USER_PROFILE_ITEMS.map((u) => ({
   key: u.title,
@@ -79,17 +36,47 @@ export const UserAccountLayout = () => {
   const stylesContext = useStylesContext();
   const location = useLocation();
   const [activeKey, setActiveKey] = useState(TAB_ITEMS[0].key);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [user, setUser] = useState({
+    name: '',
+    surname: '',
+    gmail: '',
+    phone: ''
+  });
+  const DESCRIPTION_ITEMS: DescriptionsProps['items'] = [
+    {
+      key: 'full-name',
+      label: 'Name',
+      children: <span>{`${user.name} ${user.surname}`}</span>,
+    },
+    {
+      key: 'email',
+      label: 'Email',
+      children: (
+        <Link href="mailto:kelvin.kiprop96@gmail.com">
+          {user.gmail}
+        </Link>
+      ),
+    },
+    {
+      key: 'telephone',
+      label: 'Phone',
+      children: <Link href={`tel:${user.phone}`}>{user.phone}</Link>,
+    },
+  ];
 
   const onChange = (key: string) => {
     navigate(key);
   };
 
   useEffect(() => {
-    console.log(location);
     const k =
       TAB_ITEMS.find((d) => location.pathname.includes(d.key))?.key || '';
-
-    console.log(k);
+    getMyData(navigate, messageApi).then(data => {
+      if (data) {
+        setUser(data);
+      }
+    })
     setActiveKey(k);
   }, [location]);
 

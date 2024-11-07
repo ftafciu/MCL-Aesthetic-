@@ -53,6 +53,8 @@ import CreateContent from '../pages/admin/clients/content/CreateContent.tsx';
 import EditContent from '../pages/admin/clients/content/EditContent.tsx';
 import SessionPage from '../pages/admin/sessions/index.tsx';
 import CreateSessionContent from '../pages/admin/sessions/CreateSessionContent.tsx';
+import { DetailsPage } from '../pages/admin/profile/Details.tsx';
+import { SecurityPage } from '../pages/admin/profile/Security.tsx';
 
 // Custom scroll restoration function
 export const ScrollToTop: React.FC = () => {
@@ -154,6 +156,22 @@ const router = createBrowserRouter([
       {
         path: "create",
         element: <SafeRoute><CreateSessionContent /></SafeRoute>
+      }
+    ]
+  },
+  {
+    path: '/profile',
+    element: <PageWrapper children={<UserAccountLayout />} />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        path: "details",
+        element: <SafeRoute><DetailsPage /></SafeRoute>
+      },
+      {
+        path: 'security',
+        element: <SafeRoute><SecurityPage /></SafeRoute>
       }
     ]
   },

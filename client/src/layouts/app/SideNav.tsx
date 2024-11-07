@@ -126,45 +126,6 @@ const items: MenuProps['items'] = [
     getItem(<Link to={PATH_CORPORATE.license}>License</Link>, 'license', null),
   ]),
 
-  getItem('User profile', 'user-profile', <UserOutlined />, [
-    getItem(
-      <Link to={PATH_USER_PROFILE.details}>Details</Link>,
-      'details',
-      null
-    ),
-    getItem(
-      <Link to={PATH_USER_PROFILE.preferences}>Preferences</Link>,
-      'preferences',
-      null
-    ),
-    getItem(
-      <Link to={PATH_USER_PROFILE.personalInformation}>Information</Link>,
-      'personal-information',
-      null
-    ),
-    getItem(
-      <Link to={PATH_USER_PROFILE.security}>Security</Link>,
-      'security',
-      null
-    ),
-    getItem(
-      <Link to={PATH_USER_PROFILE.activity}>Activity</Link>,
-      'activity',
-      null
-    ),
-    getItem(
-      <Link to={PATH_USER_PROFILE.action}>Actions</Link>,
-      'actions',
-      null
-    ),
-    getItem(<Link to={PATH_USER_PROFILE.help}>Help</Link>, 'help', null),
-    getItem(
-      <Link to={PATH_USER_PROFILE.feedback}>Feedback</Link>,
-      'feedback',
-      null
-    ),
-  ]),
-
   getItem('Authentication', 'authentication', <SecurityScanOutlined />, [
     getItem(<Link to={PATH_AUTH.signin}>Sign In</Link>, 'auth-signin', null),
     getItem(<Link to={PATH_AUTH.signup}>Sign Up</Link>, 'auth-signup', null),

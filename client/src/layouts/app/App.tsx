@@ -66,7 +66,7 @@ export const AppLayout = ({ children }: AppLayoutProps) => {
       label: 'profile',
       icon: <UserOutlined />,
       onClick: () => {
-        navigate("/profile");
+        navigate("/profile/details");
       },
     },
     {

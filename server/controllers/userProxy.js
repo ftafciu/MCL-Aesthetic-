@@ -226,7 +226,7 @@ const serveMyInfo = async (req, res) => {
       gmail: user.gmail,
       name: user.name,
       surname: user.surname,
-      role: user.role,
+      phone: user.phone,
     });
   } catch (err) {
     res.status(400).json({ message: err.message });
