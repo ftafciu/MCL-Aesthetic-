@@ -22,7 +22,7 @@ import {
     Flex,
     message,
     Row,
-    Typography,
+    Typography, 
 } from 'antd';
 import { HomeOutlined, PieChartOutlined } from '@ant-design/icons';
 import { DASHBOARD_ITEMS } from '../../../constants';
@@ -99,8 +99,7 @@ export const Dashboard = () => {
                     <Row>
                         <Col>
                             <Card
-                                title="Recently added projects"
-                                extra={<Button>View all projects</Button>}
+                                title="Upcoming Sessions"
                             >
                                 {projectsDataError ? (
                                     <Alert

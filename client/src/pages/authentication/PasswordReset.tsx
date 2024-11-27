@@ -13,7 +13,7 @@ import { useMediaQuery } from 'react-responsive';
 import { PATH_DASHBOARD } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Sticker from "../../assets/login-img.jpg";
+import Sticker from "../../assets/login-img.png";
 
 const { Title, Text } = Typography;
 

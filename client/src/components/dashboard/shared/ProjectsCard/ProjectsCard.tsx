@@ -1,5 +1,6 @@
 import {
   Card as AntdCard,
+  Button,
   CardProps,
   Descriptions,
   DescriptionsProps,
@@ -27,90 +28,65 @@ export const ProjectsCard = (props: Props) => {
   const {
     size,
     project: {
-      client_name,
-      end_date,
-      project_duration,
-      project_manager,
-      project_name,
-      project_type,
-      project_location,
-      priority,
-      team_size,
-      status,
+      name, 
+      surname,
+      phoneNumber,
+      age,
+      sessionDate,
+      sessionType,
+      bodyParts,
     },
     ...others
   } = props;
 
   const items: DescriptionsProps['items'] = [
     {
-      key: 'project_name',
-      label: 'Title',
+      key: 'name',
+      label: 'Name',
       children: (
-        <span className="text-capitalize">{project_name.slice(0, 36)}...</span>
+        <span className="text-capitalize">{name}</span>
       ),
       span: 24,
     },
     {
-      key: 'project_manager',
-      label: 'Manager',
-      children: project_manager,
+      key: 'surname',
+      label: 'Surname',
+      children: surname,
       span: 24,
     },
     {
-      key: 'project_client',
-      label: 'Client',
-      children: client_name,
+      key: 'phoneNumber',
+      label: 'Phone Number',
+      children: phoneNumber,
       span: 24,
     },
     {
-      key: 'project_type',
-      label: 'Type',
-      children: <span className="text-capitalize">{project_type}</span>,
+      key: 'age',
+      label: 'Age',
+      children: <span className="text-capitalize">{age}</span>,
       span: 24,
     },
     {
-      key: 'project_location',
-      label: 'Location',
-      children: project_location,
+      key: 'sessionDate',
+      label: 'Session Date',
+      children: <span>{sessionDate.toString().slice(0,10)}</span>,
       span: 24,
     },
     {
-      key: 'project_priority',
-      label: 'Priority',
-      children: <span className="text-capitalize">{priority}</span>,
+      key: 'sessionType',
+      label: 'Session Type',
+      children: <span className="text-capitalize">{sessionType}</span>,
     },
     {
-      key: 'project_status',
-      label: 'Status',
-      children: <span className="text-capitalize">{status}</span>,
+      key: 'bodyParts',
+      label: 'Body Parts',
+      children: <span className="text-capitalize">{bodyParts}</span>,
     },
     {
-      key: 'team_size',
-      label: <UsergroupAddOutlined />,
-      children: (
-        <Tooltip title="Team size">
-          <Typography.Text>{team_size}</Typography.Text>
-        </Tooltip>
-      ),
-    },
-    {
-      key: 'period',
-      label: <ClockCircleOutlined />,
-      children: (
-        <Tooltip title="Project duration (months)">
-          <Typography.Text>{project_duration}</Typography.Text>
-        </Tooltip>
-      ),
-    },
-    {
-      key: 'end_date',
-      label: <CalendarOutlined />,
-      children: (
-        <Tooltip title="Project end date">
-          <Typography.Text>{end_date}</Typography.Text>
-        </Tooltip>
-      ),
-    },
+      key: "button",
+      label: "",
+      children: <Button style={{backgroundColor: "#4169E1"}}>Actions</Button>
+    }
   ];
 
   return size === 'small' ? (
@@ -120,26 +96,30 @@ export const ProjectsCard = (props: Props) => {
       className="project-small-card"
       {...others}
     >
-      <Title level={5} className="text-capitalize m-0">
-        {project_name.slice(0, 15)}
-      </Title>
       <br />
       <Flex wrap="wrap" gap="small" className="text-capitalize">
         <Text>
-          Owner: <b>{project_manager},</b>
+          Name: <b>{name},</b>
         </Text>
         <Text>
-          Client: <b>{client_name},</b>
+          Surname: <b>{surname},</b>
         </Text>
         <Text>
-          Priority: <b>{priority},</b>
+          Phone Number: <b>{phoneNumber},</b>
         </Text>
         <Text>
-          Type: <b>{project_type},</b>
+          Age: <b>{age},</b>
         </Text>
         <Text>
-          Location: <b>{project_location}</b>
+          Session Date: <b>{sessionDate.toString().slice(0,10)}</b>
         </Text>
+        <Text>
+          Session Type: <b>{sessionType}</b>
+        </Text>
+        <Text>
+          Body Parts: <b>{bodyParts}</b>
+        </Text>
+        <Button>Book Session</Button>
       </Flex>
     </AntdCard>
   ) : (

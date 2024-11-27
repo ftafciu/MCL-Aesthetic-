@@ -83,7 +83,7 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
                     color="green"
                     text={
                       <Typography.Text>
-                        Bpdy parts: {generateBodyPartsString(item.bodyParts)}
+                        Body parts: {generateBodyPartsString(item.bodyParts)}
                       </Typography.Text>
                     }
                   />

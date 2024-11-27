@@ -15,7 +15,7 @@ import { PATH_AUTH, PATH_DASHBOARD } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { login } from "./scripts/login-scripts.ts";
-import Sticker from "../../assets/login-img.jpg";
+import './style.css';
 
 const { Title, Link } = Typography;
 
@@ -46,16 +46,17 @@ export const SignInPage = () => {
   };
 
   return (
-    <Row style={{ minHeight: isMobile ? 'auto' : '97vh', overflow: 'scroll', maxHeight: '100vh' }}>
+    <Row style={{ minHeight: isMobile ? 'auto' : '100vh' }}>
       <Col xs={24} lg={12}>
         <Flex
           vertical
-          align="center"
-          justify="center"
+          align="flex-start"
+          justify="flex-start"
           className="text-center"
           style={{ height: '100%' }}
         >
-          <img src={Sticker} alt='login-sticker' width={'100%'} height={'100%'}></img>
+          <div className='login-div'></div>
+          {/* <img src={Sticker} alt='login-sticker' width={'100%'} height={'70%'}></img> */}
         </Flex>
       </Col>
       <Col xs={24} lg={12}>
@@ -64,9 +65,9 @@ export const SignInPage = () => {
           align={isMobile ? 'center' : 'flex-start'}
           justify="center"
           gap="middle"
-          style={{ height: '100%', padding: '2rem' }}
+          style={{ height: '100%', background: "#f5f3ef", paddingLeft: "70px"}}
         >
-          <Title className="m-0">Login</Title>
+          <Title className="m-0" style={{color:"#d5a4a5", paddingLeft:"200px", paddingBottom:"40px"}} >Login</Title>
           <Form
             name="sign-up-form"
             layout="vertical"
@@ -81,6 +82,7 @@ export const SignInPage = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             requiredMark={false}
+            style={{ marginLeft: '15px', color:'#d5a4a5 !important' }}
           >
             <Row gutter={[8, 0]}>
               <Col xs={24}>
