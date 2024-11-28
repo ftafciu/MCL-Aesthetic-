@@ -21,7 +21,8 @@ const sessionSchema = new Schema({
     },
   },
   comment: { type: String, required: true },
-  pictures: { type: String, required: true },
+  pictures: { type: [String], required: false },
+  price: { type: Number, required: true }
 });
 
 const Session = mongoose.model("Session", sessionSchema);

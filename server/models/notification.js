@@ -1,12 +1,8 @@
 const mongoose = require("mongoose");
-const faceSession = require("./face-session");
 const { Schema } = mongoose;
 
 const notificationSchema = new Schema({
   client: { type: Schema.Types.ObjectId, required: true, ref: "Client" },
-  session: { type: Schema.Types.ObjectId, required: false, ref: "Session" },
-  faceSession: { type: Schema.Types.ObjectId, required: false, ref: "FaceSession" },
-  bodySession: { type: Schema.Types.ObjectId, required: false, ref: "BodySession" },
   nextSessionDate: {
     type: Date,
     required: true,

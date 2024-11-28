@@ -43,6 +43,17 @@ app.get('/all-sessions', (req, res) => {
     });
 });
 
+app.get('/finished-sessions', (req, res) => {
+    login_controller.authorize(req, res, async () => {
+        const response = await sessionRepo.getFinishedSessions(req.body.startDate, req.body.endDate);
+        if (response.result) {
+            res.status(200).json(response.sessions);
+        } else {
+            res.status(400).json({ message: response.message })
+        }
+    });
+})
+
 app.post('/filter-by-date', (req, res) => {
     login_controller.authorize(req, res, async () => {
         const response = await sessionRepo.filterSessionsByDate(req.body.firstDate, req.body.lastDate);
@@ -71,6 +82,37 @@ app.post('/create', (req, res) => {
         }
     });
 });
+
+app.post('/create-by-notification', (req, res) => {
+    login_controller.authorize(req, res, async () => {
+        const response = await sessionRepo.createSessionFromNotification(
+            req.body.notificationId,
+            req.body.sessionType,
+            req.body.sessionInfo
+        );
+        if (response?.result) {
+            res.status(200).json({ message: response?.message });
+        } else {
+            res.status(400).json({ message: response?.message });
+        }
+    });
+});
+
+app.put('/finish-session', (req, res) => {
+    login_controller.authorize(req, res, async () => {
+        const response = await sessionRepo.finishSession(
+            req.body.sessionId,
+            req.body.sessionPrice,
+            req.body.comments,
+            []
+        )
+        if (response?.result) {
+            res.status(200).json({ message: response?.message });
+        } else {
+            res.status(400).json({ message: response?.message });
+        }
+    });
+})
 
 app.put('/edit/:sessionId', (req, res) => {
 

@@ -1,6 +1,8 @@
 const FaceSession = require('../models/face-session');
 const LaserSession = require("../models/laser-session");
 const BodySession = require('../models/body-session');
+const Session = require('../models/session.js');
+const notificationRepo = require("./notification-repository.js");
 
 const createBodySession = async (sessionInfo) => {
     try {
@@ -31,6 +33,26 @@ const createLaserSession = async (sessionInfo) => {
         return { result: false, message: error.message };
     }
 };
+
+const createSessionFromNotification = async (notificationId, sessionType, sessionInfo) => {
+    try {
+        let result = null;
+        if (sessionType === 'body') {
+            result = await createBodySession(sessionInfo);
+        } else if(sessionType === 'face') {
+            result = await createFaceSession(sessionInfo);
+        } else {
+            result = await createLaserSession(sessionInfo);
+        }
+        if(!result?.result){
+            throw new Error("Session could not be created!");
+        }
+        await notificationRepo.changeNotificationStatus(notificationId);
+        return { result: true, message: "Session created successfully!" };
+    } catch(error) {
+        return { result: false, message: "Could not create the session!" };
+    }
+}
 
 const editSession = async () => {
 
@@ -155,14 +177,76 @@ const filterSessionsByDate = async (startDate, endDate) => {
     }
 }
 
+const findSession = async (sessionId) => {
+    try {
+        const faceSession = await FaceSession.findById(sessionId).populate('client');
+        const bodySession = await BodySession.findById(sessionId).populate('client');
+        const laserSession = await LaserSession.findById(sessionId).populate('client');
+        return faceSession || bodySession || laserSession;
+    } catch(error) {
+        return null;
+    }
+}
+
+const finishSession = async (sessionId, sessionPrice, comments, pictures) => {
+    try {
+        const session = await findSession(sessionId);
+        const newSession = new Session({
+            client: session.client,
+            date: session.date,
+            comments: comments,
+            pictures: pictures,
+            price: sessionPrice
+        });
+        await newSession.save();
+        return { result: true, message: "Session was ended!" };
+    } catch(error) {
+        return { result: false, message: error.message };
+    }
+};
+
+const getFinishedSessions = async (startDate, endDate) => {
+    try {
+        const now = new Date(startDate);
+        const then = new Date(endDate);
+        const startDate1 = new Date(
+            Date.UTC(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate(),
+                0,
+                0,
+                0
+            )
+        );
+        const endDate1 = new Date(
+            Date.UTC(
+                then.getFullYear(),
+                then.getMonth(),
+                then.getDate(),
+                23,
+                59,
+                59
+            )
+        );
+        const finishedSessions = await Session.find({ $gte: startDate1, $lte: endDate1 }).populate('client');
+        return { result: true, sessions: finishedSessions }
+    } catch(error) {
+        return { result: false, message: error.message };
+    }
+}
+
 module.exports = {
     createBodySession,
     createFaceSession,
     createLaserSession,
+    createSessionFromNotification,
     editSession,
     deleteSession,
     getAllSessions,
     getClientSessions,
     getDailySessions,
-    filterSessionsByDate
+    getFinishedSessions,
+    filterSessionsByDate,
+    finishSession
 }

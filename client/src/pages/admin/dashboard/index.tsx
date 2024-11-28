@@ -1,38 +1,27 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Card,
     DeliveryRequestCard,
-    GetStartedCard,
     Loader,
     MarketingStatsCard,
-    NotificationsCard,
     PageHeader,
     ProjectsCard,
-    TasksChartCard,
-    TasksListCard,
-    WeeklyActivityCard,
 } from '../../../components';
 import {
     Alert,
-    Button,
-    CardProps,
     Carousel,
-    CarouselProps,
     Col,
-    Flex,
     message,
     Row,
-    Typography, 
 } from 'antd';
-import { HomeOutlined, PieChartOutlined } from '@ant-design/icons';
-import { DASHBOARD_ITEMS } from '../../../constants';
-import { Link, useNavigate } from 'react-router-dom';
+import { HomeOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useStylesContext } from '../../../context';
 import { useFetchData } from '../../../hooks';
 import { Projects } from '../../../types';
-import CountUp from 'react-countup';
 import { getDailySessions } from '../sessions/scripts/scripts';
+import { getNotifications } from './scripts';
 
 export const Dashboard = () => {
     const stylesContext = useStylesContext();
@@ -44,17 +33,24 @@ export const Dashboard = () => {
         loading: projectsDataLoading,
     } = useFetchData('../mocks/Projects.json');
     const [sessionData, setSessionData] = useState([]);
+    const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
         getDailySessions(navigate, messageApi).then(data => {
             if (data) {
                 setSessionData(data);
             }
+        });
+        getNotifications(navigate, messageApi).then(data => {
+            if(data) {
+                setNotifications(data);
+            }
         })
     }, [])
 
     return (
         <div>
+            {contextHolder}
             <Helmet>
                 <title>Admin | Dashboard</title>
             </Helmet>
@@ -112,7 +108,7 @@ export const Dashboard = () => {
                                     <Loader />
                                 ) : (
                                     <Carousel arrows autoplay>
-                                        {projectsData.slice(0, 4).map((o: Projects) => {
+                                        {notifications.map((o: any) => {
                                             return (
                                                 <div>
                                                     <ProjectsCard

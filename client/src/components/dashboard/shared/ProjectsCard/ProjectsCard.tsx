@@ -20,7 +20,7 @@ import './styles.css';
 const { Text, Title } = Typography;
 
 type Props = {
-  project: Projects;
+  project: any;
   size?: 'small' | 'default';
 } & CardProps;
 
