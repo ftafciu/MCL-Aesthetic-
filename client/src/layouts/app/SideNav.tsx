@@ -100,31 +100,8 @@ const items: MenuProps['items'] = [
       null
     ),
   ]),
-  getItem(
-    <Link to={PATH_ABOUT.root}>About</Link>,
-    'about',
-    <InfoCircleOutlined />
-  ),
-  getItem(
-    <Link to={PATH_SITEMAP.root}>Sitemap</Link>,
-    'sitemap',
-    <BranchesOutlined />
-  ),
 
   getItem('Pages', 'pages', null, [], 'group'),
-
-  getItem('Corporate', 'corporate', <IdcardOutlined />, [
-    getItem(<Link to={PATH_CORPORATE.about}>About</Link>, 'about', null),
-    getItem(<Link to={PATH_CORPORATE.team}>Team</Link>, 'team', null),
-    getItem(<Link to={PATH_CORPORATE.faqs}>FAQ</Link>, 'faqs', null),
-    getItem(
-      <Link to={PATH_CORPORATE.contact}>Contact us</Link>,
-      'contact us',
-      null
-    ),
-    getItem(<Link to={PATH_CORPORATE.pricing}>Pricing</Link>, 'pricing', null),
-    getItem(<Link to={PATH_CORPORATE.license}>License</Link>, 'license', null),
-  ]),
 
   getItem('Authentication', 'authentication', <SecurityScanOutlined />, [
     getItem(<Link to={PATH_AUTH.signin}>Sign In</Link>, 'auth-signin', null),
@@ -148,43 +125,13 @@ const items: MenuProps['items'] = [
     ),
   ]),
 
-  getItem('Errors', 'errors', <BugOutlined />, [
-    getItem(<Link to={PATH_ERROR.error400}>400</Link>, '400', null),
-    getItem(<Link to={PATH_ERROR.error403}>403</Link>, '403', null),
-    getItem(<Link to={PATH_ERROR.error404}>404</Link>, '404', null),
-    getItem(<Link to={PATH_ERROR.error500}>500</Link>, '500', null),
-    getItem(<Link to={PATH_ERROR.error503}>503</Link>, '503', null),
-  ]),
-
-  getItem('Help', 'help', null, [], 'group'),
-  getItem(
-    <Link to={PATH_DOCS.productRoadmap} target="_blank">
-      Roadmap
-    </Link>,
-    'product-roadmap',
-    <ProductOutlined />
-  ),
   getItem(
     <Link to={PATH_DOCS.components} target="_blank">
       Components
     </Link>,
     'components',
     <AppstoreAddOutlined />
-  ),
-  getItem(
-    <Link to={PATH_DOCS.help} target="_blank">
-      Documentation
-    </Link>,
-    'documentation',
-    <SnippetsOutlined />
-  ),
-  getItem(
-    <Link to={PATH_GITHUB.repo} target="_blank">
-      Give us a star
-    </Link>,
-    'give-us-a-star',
-    <GithubOutlined />
-  ),
+  )
 ];
 
 const rootSubmenuKeys = ['dashboards', 'corporate', 'user-profile'];
