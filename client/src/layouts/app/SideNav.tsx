@@ -1,40 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ConfigProvider, Layout, Menu, MenuProps, SiderProps } from 'antd';
 import {
-  AppstoreAddOutlined,
-  BranchesOutlined,
-  BugOutlined,
   CalendarOutlined,
   DollarOutlined,
   FieldTimeOutlined,
-  GithubOutlined,
-  IdcardOutlined,
-  InfoCircleOutlined,
   MenuOutlined,
   PieChartOutlined,
-  ProductOutlined,
   ScheduleOutlined,
   SecurityScanOutlined,
-  SnippetsOutlined,
   UserAddOutlined,
-  UserOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
 import { Logo } from '../../components';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  PATH_ABOUT,
   PATH_AUTH,
-  PATH_CORPORATE,
-  PATH_DASHBOARD,
   PATH_DASHBOARD_ADMIN,
   PATH_CLIENTS,
-  PATH_DOCS,
-  PATH_ERROR,
-  PATH_GITHUB,
   PATH_LANDING,
-  PATH_SITEMAP,
-  PATH_USER_PROFILE,
 } from '../../constants';
 import { COLOR } from '../../App.tsx';
 import { PATH_EXPENSES, PATH_SESSION } from '../../constants/routes.ts';
@@ -62,44 +45,14 @@ const getItem = (
 const items: MenuProps['items'] = [
   getItem(<Link to={PATH_DASHBOARD_ADMIN.root}>Dashboard</Link>, 'dashboard', <PieChartOutlined />),
   getItem('Clients', 'client', <UserSwitchOutlined />, [
-    getItem(<Link to={PATH_CLIENTS.root}>Clients list</Link>, 'clients', <MenuOutlined />),
-    getItem(<Link to={PATH_CLIENTS.create}>Create client</Link>, 'create_client', <UserAddOutlined />)
+    getItem(<Link to={PATH_CLIENTS.root}>Clients list</Link>, 'client', <MenuOutlined />),
+    getItem(<Link to={PATH_CLIENTS.create}>Create client</Link>, 'create', <UserAddOutlined />)
   ]),
   getItem('Sessions', 'sessions', <FieldTimeOutlined />, [
     getItem(<Link to={PATH_SESSION.root}>Sessions list</Link>, 'sessions', <CalendarOutlined />),
-    getItem(<Link to={PATH_SESSION.create}>Create session</Link>, 'create_session', <ScheduleOutlined />)
+    getItem(<Link to={PATH_SESSION.create}>Create session</Link>, 'create-session', <ScheduleOutlined />)
   ]),
   getItem(<Link to={PATH_EXPENSES.root}>Expenses</Link>, 'expenses', <DollarOutlined />),
-  getItem('Dashboards', 'dashboards', <PieChartOutlined />, [
-    getItem(<Link to={PATH_DASHBOARD.default}>Default</Link>, 'default', null),
-    getItem(
-      <Link to={PATH_DASHBOARD.projects}>Projects</Link>,
-      'projects',
-      null
-    ),
-    getItem(
-      <Link to={PATH_DASHBOARD.ecommerce}>eCommerce</Link>,
-      'ecommerce',
-      null
-    ),
-    getItem(
-      <Link to={PATH_DASHBOARD.marketing}>Marketing</Link>,
-      'marketing',
-      null
-    ),
-    getItem(<Link to={PATH_DASHBOARD.social}>Social</Link>, 'social', null),
-    getItem(<Link to={PATH_DASHBOARD.bidding}>Bidding</Link>, 'bidding', null),
-    getItem(
-      <Link to={PATH_DASHBOARD.learning}>Learning</Link>,
-      'learning',
-      null
-    ),
-    getItem(
-      <Link to={PATH_DASHBOARD.logistics}>Logistics</Link>,
-      'logistics',
-      null
-    ),
-  ]),
 
   getItem('Pages', 'pages', null, [], 'group'),
 
@@ -124,14 +77,6 @@ const items: MenuProps['items'] = [
       null
     ),
   ]),
-
-  getItem(
-    <Link to={PATH_DOCS.components} target="_blank">
-      Components
-    </Link>,
-    'components',
-    <AppstoreAddOutlined />
-  )
 ];
 
 const rootSubmenuKeys = ['dashboards', 'corporate', 'user-profile'];

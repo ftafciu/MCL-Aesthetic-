@@ -11,6 +11,7 @@ import {
     Alert,
     Carousel,
     Col,
+    Empty,
     message,
     Row,
 } from 'antd';
@@ -108,7 +109,7 @@ export const Dashboard = () => {
                                     <Loader />
                                 ) : (
                                     <Carousel arrows autoplay>
-                                        {notifications.map((o: any) => {
+                                        {notifications.length ? notifications.map((o: any) => {
                                             return (
                                                 <div>
                                                     <ProjectsCard
@@ -118,7 +119,7 @@ export const Dashboard = () => {
                                                     />
                                                 </div>
                                             );
-                                        })}
+                                        }) : <div><Empty/></div>}
                                     </Carousel>
                                 )}
                             </Card>
