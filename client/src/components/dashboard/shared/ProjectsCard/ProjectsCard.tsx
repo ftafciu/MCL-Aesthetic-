@@ -16,6 +16,7 @@ import {
 import { Projects } from '../../../../types';
 
 import './styles.css';
+import { useNavigate } from 'react-router-dom';
 
 const { Text, Title } = Typography;
 
@@ -25,16 +26,14 @@ type Props = {
 } & CardProps;
 
 export const ProjectsCard = (props: Props) => {
+  const navigate = useNavigate();
   const {
     size,
     project: {
-      name, 
-      surname,
-      phoneNumber,
-      age,
-      sessionDate,
-      sessionType,
-      bodyParts,
+      _id,
+      client,
+      nextSessionDate,
+      type,
     },
     ...others
   } = props;
@@ -44,48 +43,49 @@ export const ProjectsCard = (props: Props) => {
       key: 'name',
       label: 'Name',
       children: (
-        <span className="text-capitalize">{name}</span>
+        <span className="text-capitalize">{client.name}</span>
       ),
       span: 24,
     },
     {
       key: 'surname',
       label: 'Surname',
-      children: surname,
+      children: client.surname,
       span: 24,
     },
     {
       key: 'phoneNumber',
       label: 'Phone Number',
-      children: phoneNumber,
+      children: client.phoneNumber,
       span: 24,
     },
     {
       key: 'age',
       label: 'Age',
-      children: <span className="text-capitalize">{age}</span>,
+      children: <span className="text-capitalize">{client.age}</span>,
       span: 24,
     },
     {
       key: 'sessionDate',
       label: 'Session Date',
-      children: <span>{sessionDate.toString().slice(0,10)}</span>,
+      children: <span>{nextSessionDate.slice(0, 10)}</span>,
       span: 24,
-    },
-    {
-      key: 'sessionType',
-      label: 'Session Type',
-      children: <span className="text-capitalize">{sessionType}</span>,
-    },
-    {
-      key: 'bodyParts',
-      label: 'Body Parts',
-      children: <span className="text-capitalize">{bodyParts}</span>,
     },
     {
       key: "button",
       label: "",
-      children: <Button style={{backgroundColor: "#4169E1"}}>Actions</Button>
+      children: <Flex flex='row' justify='space-between' style={{ width: '70%'}}>
+        <Button style={{ backgroundColor: "#4169E1", color: 'white' }} onClick={() => {
+          navigate('/sessions/create-session', {
+            state: {
+                notificationClient: client,
+                notificationId: _id
+            },
+        });
+        }}>Reserve</Button>
+        <Button style={{ backgroundColor: "red", color: 'white' }}>Cancel</Button>
+        <Button style={{ backgroundColor: "gainsboro", color: 'white' }}> Postpone</Button>
+      </Flex>
     }
   ];
 
@@ -99,27 +99,20 @@ export const ProjectsCard = (props: Props) => {
       <br />
       <Flex wrap="wrap" gap="small" className="text-capitalize">
         <Text>
-          Name: <b>{name},</b>
+          Name: <b>{client.name},</b>
         </Text>
         <Text>
-          Surname: <b>{surname},</b>
+          Surname: <b>{client.surname},</b>
         </Text>
         <Text>
-          Phone Number: <b>{phoneNumber},</b>
+          Phone Number: <b>{client.phoneNumber},</b>
         </Text>
         <Text>
-          Age: <b>{age},</b>
+          Age: <b>{client.age},</b>
         </Text>
         <Text>
-          Session Date: <b>{sessionDate.toString().slice(0,10)}</b>
+          Session Date: <b>{nextSessionDate.slice(0, 10)}</b>
         </Text>
-        <Text>
-          Session Type: <b>{sessionType}</b>
-        </Text>
-        <Text>
-          Body Parts: <b>{bodyParts}</b>
-        </Text>
-        <Button>Book Session</Button>
       </Flex>
     </AntdCard>
   ) : (

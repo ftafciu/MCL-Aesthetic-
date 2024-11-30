@@ -102,9 +102,10 @@ app.put('/finish-session', (req, res) => {
     login_controller.authorize(req, res, async () => {
         const response = await sessionRepo.finishSession(
             req.body.sessionId,
-            req.body.sessionPrice,
+            req.body.price,
             req.body.comments,
-            []
+            [],
+            req.body.last
         )
         if (response?.result) {
             res.status(200).json({ message: response?.message });

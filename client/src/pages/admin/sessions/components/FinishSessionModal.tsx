@@ -4,6 +4,8 @@ import TextArea from 'antd/es/input/TextArea';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
 import { message, Upload } from 'antd';
+import { finishSession } from '../scripts/scripts';
+import { useNavigate } from 'react-router-dom';
 
 const { Dragger } = Upload;
 
@@ -33,23 +35,33 @@ const props: UploadProps = {
     },
 };
 
-const FinishSessionModal: React.FC = () => {
+function FinishSessionModal ({ dependency, sessionId }: { dependency: any, sessionId: string }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [price, setPrice] = useState(1);
+    const [comments, setComments] = useState("");
+    const [last, setLast] = useState(false);
     const [form] = Form.useForm();
+    const navigator = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
     const showModal = () => {
         setIsModalOpen(true);
     };
 
     const handleOk = () => {
-        setIsModalOpen(false);
+        form.submit();
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
     };
 
-    const onChangePrice = () => {
+    const onChangePrice = (value: number | null) => {
+        if(value)
+            setPrice(value);
+    }
 
+    const onChangeComments = (value: string) => {
+        setComments(value);
     }
 
     return (
@@ -67,7 +79,8 @@ const FinishSessionModal: React.FC = () => {
                     autoComplete="off"
                     layout='vertical'
                     onFinish={(values) => {
-
+                        finishSession(navigator, messageApi, dependency, sessionId, price, comments, last);
+                        setIsModalOpen(false);
                     }}
                 >
                     <Form.Item<FieldType>
@@ -78,12 +91,14 @@ const FinishSessionModal: React.FC = () => {
                         <InputNumber<number>
                             style={{ width: '100%' }}
                             defaultValue={0}
+                            value={price}
+                            onChange={onChangePrice}
                             formatter={(value) => `€ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                             parser={(value) => value?.replace(/\€\s?|(,*)/g, '') as unknown as number}
                         />
                     </Form.Item>
                     <Form.Item label="Comments" name="comments">
-                        <TextArea rows={4} />
+                        <TextArea rows={4} value={comments} onChange={(event) => onChangeComments(event.target.value)}/>
                     </Form.Item>
                     <Dragger {...props}>
                         <p className="ant-upload-drag-icon">
@@ -91,7 +106,7 @@ const FinishSessionModal: React.FC = () => {
                         </p>
                         <p className="ant-upload-text">Click or drag photos to this area to upload</p>
                     </Dragger>
-                    <Checkbox style={{ marginTop: '15px' }}>
+                    <Checkbox style={{ marginTop: '15px' }} value={last} onChange={()=>setLast(!last)}>
                         Check if this is the last session
                     </Checkbox>
                 </Form>

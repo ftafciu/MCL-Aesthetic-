@@ -94,6 +94,7 @@ function SessionPage() {
             }} />
             <DeliveryRequestCard
                 data={data}
+                dependency={setDataUpdated}
             />
         </div>
     )

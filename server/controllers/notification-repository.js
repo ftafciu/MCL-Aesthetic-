@@ -23,14 +23,23 @@ const getNotifications = async () => {
                 now.getSeconds()
             )
         );
-        const endDate = startDate;
-        endDate.setDate(endDate.getDate() + 2);
+        const endDate = new Date(
+            Date.UTC(
+                now.getFullYear(),
+                now.getMonth(),
+                now.getDate() + 2,
+                now.getHours(),
+                now.getMinutes(),
+                now.getSeconds()
+            )
+        );
         const notifications = await Notification.find({
             nextSessionDate: {
                 $gte: startDate,
                 $lte: endDate
-            }
-        })
+            },
+            status: 'uncleared'
+        }).populate('client')
         return { result: true, notifications };
     } catch (error) {
         return { result: false, message: error.message };

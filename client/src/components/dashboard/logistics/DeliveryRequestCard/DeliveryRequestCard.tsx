@@ -11,6 +11,7 @@ type Props = {
   data?: any[];
   loading?: boolean;
   error?: ReactNode;
+  dependency?: any;
   seeAll?: boolean;
 } & CardProps;
 
@@ -23,7 +24,7 @@ const generateBodyPartsString = (bodyParts: any) => {
   return bodyPartsString;
 }
 
-export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
+export const DeliveryRequestCard = ({ data, dependency, seeAll, ...others }: Props) => {
   const navigate = useNavigate();
 
   return (
@@ -106,7 +107,7 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
                     {item.client.phoneNumber}
                   </Typography.Link>
                 </Flex>
-                {!item?.price && <FinishSessionModal />}
+                {!item?.price && <FinishSessionModal dependency={dependency} sessionId={item._id}/>}
               </Flex>
             </Space>
           </List.Item>

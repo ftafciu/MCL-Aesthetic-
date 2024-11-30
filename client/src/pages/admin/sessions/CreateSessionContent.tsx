@@ -30,7 +30,7 @@ import {
 } from 'antd';
 import { BackwardOutlined, CheckOutlined, HomeOutlined, PieChartOutlined } from '@ant-design/icons';
 import { DASHBOARD_ITEMS } from '../../../constants';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useStylesContext } from '../../../context';
 import { useFetchData } from '../../../hooks';
@@ -40,7 +40,7 @@ import HeadSession from './components/HeadSessionForm';
 import LaserSession from './components/LaserSession';
 import CalendarPlaceholder from "../../../assets/calendar.png";
 import { getClients } from '../clients/scripts/client-scripts';
-import { createSession } from './scripts/scripts';
+import { createSession, createSessionFromNotification } from './scripts/scripts';
 
 const RadioOptions = [
     { label: <div><b>Body treatment</b></div>, value: 'body' },
@@ -66,7 +66,7 @@ const initialFaceTreatments = {
     dermopen: false
 };
 
-const generateBodySession = (client: string, date: Date) =>{
+const generateBodySession = (client: string, date: Date) => {
     return {
         client,
         date,
@@ -93,7 +93,9 @@ const generateLaserSession = (client: string, date: Date, bodyParts: any) => {
 };
 
 function CreateSessionContent() {
-    const [client, setClient] = useState<string | null>(null);
+    const location = useLocation();
+    const { notificationClient, notificationId } = location.state || {};
+    const [client, setClient] = useState<string | null>(notificationClient?._id || null);
     const [possibleClients, setPossibleClients] = useState([]);
     const [faceTreatment, setFaceTreatment] = useState(initialFaceTreatments);
     const [bodyParts, setBodyParts] = useState(initialBodyParts)
@@ -126,7 +128,10 @@ function CreateSessionContent() {
 
     useEffect(() => {
         if (client) {
-            const selectedClient: any = possibleClients.filter((c: any) => c._id === client)[0];
+            let selectedClient: any = notificationClient;
+            if (possibleClients.length) {
+                selectedClient = possibleClients.filter((c: any) => c._id === client)[0];
+            }
             setBodyParts(selectedClient?.plannedTreatment?.plannedBodyParts);
             setFaceTreatment(selectedClient?.plannedTreatment?.plannedFaceTreatment);
         } else {
@@ -161,8 +166,8 @@ function CreateSessionContent() {
             <Card>
                 <Row>
                     <Col style={{ display: 'flex', width: '50%', flexDirection: 'column' }}>
-                        <Select placeholder="Select a client" onChange={(value) => {
-                            setClient(value);
+                        <Select placeholder="Select a client" value={client} defaultValue={notificationClient?._id || null} onChange={(value) => {
+                            setClient(notificationClient?._id || value);
                         }} style={{ marginBottom: '15px' }}>
                             <Select.Option value={null}>{``}</Select.Option>
                             {
@@ -171,24 +176,27 @@ function CreateSessionContent() {
                                 })
                             }
                         </Select>
-                        <DatePicker style={{ marginBottom: '15px' }} onChange={(value) => setSessionDate(value)}/>
-                        <p>Select the treatment type</p>
-                        <Radio.Group options={RadioOptions} optionType='button' value={sessionType} onChange={(e: RadioChangeEvent) => {
-                            setSessionType(e.target.value);
-                        }} />
+                        <DatePicker style={{ marginBottom: '15px' }} onChange={(value) => setSessionDate(value)} />
+                        {client && <><p>Select the treatment type</p>
+                            <Radio.Group options={RadioOptions} optionType='button' value={sessionType} onChange={(e: RadioChangeEvent) => {
+                                setSessionType(e.target.value);
+                            }} /></>}
                         {sessionType === 'face' && <HeadSession defaultValues={faceTreatment} onChangeInfo={onChangeFaceTreatment} />}
                         {sessionType === 'laser' && <LaserSession defaultValues={bodyParts} onChangeInfo={onChangeBodyParts} />}
                         <Button style={{ marginTop: '15px' }} type='primary' onClick={() => {
                             if (client && sessionType && sessionDate) {
                                 let sessionInfo = {}
-                                if(sessionType === 'face') {
+                                if (sessionType === 'face') {
                                     sessionInfo = generateFaceSession(client, sessionDate, faceTreatment);
-                                } else if(sessionType === 'body'){
+                                } else if (sessionType === 'body') {
                                     sessionInfo = generateBodySession(client, sessionDate);
                                 } else {
                                     sessionInfo = generateLaserSession(client, sessionDate, bodyParts)
                                 }
-                                createSession(navigate, messageApi, sessionType, sessionInfo)
+                                if(notificationClient)
+                                    createSessionFromNotification(navigate, messageApi, sessionType, sessionInfo, notificationId);
+                                else
+                                    createSession(navigate, messageApi, sessionType, sessionInfo)
                             } else {
                                 messageApi.open({
                                     type: 'error',

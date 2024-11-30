@@ -220,17 +220,25 @@ const findSession = async (sessionId) => {
     }
 }
 
-const finishSession = async (sessionId, sessionPrice, comments, pictures) => {
+const finishSession = async (sessionId, sessionPrice, comments, pictures, last) => {
     try {
         const session = await findSession(sessionId);
         const newSession = new Session({
             client: session.client,
             date: session.date,
-            comments: comments,
+            comment: comments,
             pictures: pictures,
-            price: sessionPrice
+            price: sessionPrice,
+            type: session.type
         });
         await newSession.save();
+        if (!last) {
+            await notificationRepo.createNotification({
+                client: session.client,
+                nextSessionDate: new Date(Date.UTC(session.date.getFullYear(), session.date.getMonth(), session.date.getDate() + 30))
+            })
+        }
+        await deleteSession(sessionId, session.type);
         return { result: true, message: "Session was ended!" };
     } catch (error) {
         return { result: false, message: error.message };

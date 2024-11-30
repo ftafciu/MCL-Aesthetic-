@@ -125,6 +125,44 @@ export const createSession = async (navigator: any, message: any, sessionType: s
     }
 };
 
+export const createSessionFromNotification = async (navigator: any, message: any, sessionType: string, sessionInfo: any, notificationId: string) => {
+    const theDate = new Date(sessionInfo.date);
+    console.log(theDate);
+    const response = await fetch(`${BACKEND_URL}/session/create-by-notification`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            sessionType, sessionInfo: {
+                ...sessionInfo, date: new Date(Date.UTC(
+                    theDate.getFullYear(),
+                    theDate.getMonth(),
+                    theDate.getDate(),
+                    0,
+                    0,
+                    0
+                ))
+            }, notificationId
+        }),
+        credentials: 'include'
+    });
+    if (response.status === 200) {
+        message.open({
+            type: 'success',
+            message: 'Session created successfully!'
+        });
+        navigator('/sessions')
+    } else if (response.status === 401) {
+        logout(navigator, message);
+    } else {
+        message.open({
+            type: 'error',
+            content: 'Something went wrong!'
+        });
+    }
+};
+
 export const editSession = async () => {
 
 };
@@ -175,3 +213,28 @@ export const getFinishedSessions = async (navigator: any, message: any, startDat
         });
     }
 }
+
+export const finishSession = async (navigator: any, message: any, dependency: any, sessionId: string, price: number, comments: string, last: boolean) => {
+    const response = await fetch(`${BACKEND_URL}/session/finish-session`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ sessionId, price, comments, last }),
+        credentials: "include"
+    })
+    if (response.status === 200) {
+        message.open({
+            type: 'success',
+            content: 'Session was finished sucessfully!'
+        });
+        dependency(true);
+    } else if (response.status === 401) {
+        logout(navigator, message);
+    } else {
+        message.open({
+            type: 'error',
+            content: "Something went wrong!"
+        });
+    }
+};
