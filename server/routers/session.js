@@ -43,7 +43,7 @@ app.get('/all-sessions', (req, res) => {
     });
 });
 
-app.get('/finished-sessions', (req, res) => {
+app.post('/finished-sessions', (req, res) => {
     login_controller.authorize(req, res, async () => {
         const response = await sessionRepo.getFinishedSessions(req.body.startDate, req.body.endDate);
         if (response.result) {

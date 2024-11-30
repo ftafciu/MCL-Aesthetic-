@@ -5,6 +5,7 @@ import './styles.css';
 import { ReactNode } from 'react';
 import { CalendarOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import FinishSessionModal from '../../../../pages/admin/sessions/components/FinishSessionModal.tsx';
 
 type Props = {
   data?: any[];
@@ -105,6 +106,7 @@ export const DeliveryRequestCard = ({ data, seeAll, ...others }: Props) => {
                     {item.client.phoneNumber}
                   </Typography.Link>
                 </Flex>
+                {!item?.price && <FinishSessionModal />}
               </Flex>
             </Space>
           </List.Item>

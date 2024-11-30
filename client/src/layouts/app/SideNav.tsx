@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ConfigProvider, Layout, Menu, MenuProps, SiderProps } from 'antd';
 import {
+  BookOutlined,
   CalendarOutlined,
   DollarOutlined,
   FieldTimeOutlined,
@@ -21,6 +22,7 @@ import {
 } from '../../constants';
 import { COLOR } from '../../App.tsx';
 import { PATH_EXPENSES, PATH_SESSION } from '../../constants/routes.ts';
+import FinishedSessions from '../../pages/admin/sessions/FinishedSessionContent.tsx';
 
 const { Sider } = Layout;
 
@@ -50,7 +52,8 @@ const items: MenuProps['items'] = [
   ]),
   getItem('Sessions', 'sessions', <FieldTimeOutlined />, [
     getItem(<Link to={PATH_SESSION.root}>Sessions list</Link>, 'sessions', <CalendarOutlined />),
-    getItem(<Link to={PATH_SESSION.create}>Create session</Link>, 'create-session', <ScheduleOutlined />)
+    getItem(<Link to={PATH_SESSION.create}>Create session</Link>, 'create-session', <ScheduleOutlined />),
+    getItem(<Link to={PATH_SESSION.finished}>Finished session</Link>, 'finished-session', <BookOutlined />)
   ]),
   getItem(<Link to={PATH_EXPENSES.root}>Expenses</Link>, 'expenses', <DollarOutlined />),
 

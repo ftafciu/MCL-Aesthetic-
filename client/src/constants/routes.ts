@@ -52,6 +52,7 @@ export const PATH_EXPENSES = {
 export const PATH_SESSION = {
   root: ROOT_SESSIONS,
   create: path(ROOT_SESSIONS, '/create-session'),
+  finished: path(ROOT_SESSIONS, '/finished-session')
 }
 
 export const PATH_SITEMAP = {

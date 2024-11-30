@@ -88,12 +88,25 @@ export const getDailySessions = async (navigator: any, message: any) => {
 };
 
 export const createSession = async (navigator: any, message: any, sessionType: string, sessionInfo: any) => {
+    const theDate = new Date(sessionInfo.date);
+    console.log(theDate);
     const response = await fetch(`${BACKEND_URL}/session/create`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({ sessionType, sessionInfo }),
+        body: JSON.stringify({
+            sessionType, sessionInfo: {
+                ...sessionInfo, date: new Date(Date.UTC(
+                    theDate.getFullYear(),
+                    theDate.getMonth(),
+                    theDate.getDate(),
+                    0,
+                    0,
+                    0
+                ))
+            }
+        }),
         credentials: 'include'
     });
     if (response.status === 200) {
@@ -136,3 +149,29 @@ export const deleteSession = async (navigator: any, message: any, sessionId: str
         });
     }
 };
+
+export const getFinishedSessions = async (navigator: any, message: any, startDate: Date, endDate: Date) => {
+    const startDate1 = new Date(startDate);
+    const endDate1 = new Date(endDate);
+    const response = await fetch(`${BACKEND_URL}/session/finished-sessions`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            startDate: new Date(Date.UTC(startDate1.getFullYear(), startDate1.getMonth(), startDate1.getDate(), 0, 0, 0)),
+            endDate: new Date(Date.UTC(endDate1.getFullYear(), endDate1.getMonth(), endDate1.getDate(), 23, 59, 59))
+        }),
+        credentials: 'include'
+    });
+    if (response.status === 200) {
+        return await response.json();
+    } else if (response.status === 401) {
+        logout(navigator, message);
+    } else {
+        message.open({
+            type: 'error',
+            content: 'Something went wrong!'
+        });
+    }
+}
