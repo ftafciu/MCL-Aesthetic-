@@ -89,7 +89,6 @@ export const getDailySessions = async (navigator: any, message: any) => {
 
 export const createSession = async (navigator: any, message: any, sessionType: string, sessionInfo: any) => {
     const theDate = new Date(sessionInfo.date);
-    console.log(theDate);
     const response = await fetch(`${BACKEND_URL}/session/create`, {
         method: 'POST',
         headers: {
@@ -127,7 +126,6 @@ export const createSession = async (navigator: any, message: any, sessionType: s
 
 export const createSessionFromNotification = async (navigator: any, message: any, sessionType: string, sessionInfo: any, notificationId: string) => {
     const theDate = new Date(sessionInfo.date);
-    console.log(theDate);
     const response = await fetch(`${BACKEND_URL}/session/create-by-notification`, {
         method: 'POST',
         headers: {

@@ -66,6 +66,7 @@ function FinishSessionModal ({ dependency, sessionId }: { dependency: any, sessi
 
     return (
         <>
+        {contextHolder}
             <Button type="primary" onClick={showModal}>
                 Finish session
             </Button>

@@ -5,6 +5,7 @@ import {
   Descriptions,
   DescriptionsProps,
   Flex,
+  message,
   Tooltip,
   Typography,
 } from 'antd';
@@ -17,6 +18,8 @@ import { Projects } from '../../../../types';
 
 import './styles.css';
 import { useNavigate } from 'react-router-dom';
+import { changeStatus } from '../../../../pages/admin/dashboard/scripts';
+import PostponeModal from './PostponeModal';
 
 const { Text, Title } = Typography;
 
@@ -27,6 +30,7 @@ type Props = {
 
 export const ProjectsCard = (props: Props) => {
   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
   const {
     size,
     project: {
@@ -83,8 +87,10 @@ export const ProjectsCard = (props: Props) => {
             },
         });
         }}>Reserve</Button>
-        <Button style={{ backgroundColor: "red", color: 'white' }}>Cancel</Button>
-        <Button style={{ backgroundColor: "gainsboro", color: 'white' }}> Postpone</Button>
+        <Button style={{ backgroundColor: "red", color: 'white' }} onClick={() => {
+          changeStatus(navigate, messageApi, _id)
+        }}>Cancel</Button>
+        <PostponeModal notificationId={_id}/>
       </Flex>
     }
   ];
@@ -96,6 +102,7 @@ export const ProjectsCard = (props: Props) => {
       className="project-small-card"
       {...others}
     >
+      {contextHolder}
       <br />
       <Flex wrap="wrap" gap="small" className="text-capitalize">
         <Text>
