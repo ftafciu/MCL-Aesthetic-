@@ -18,7 +18,39 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useStylesContext } from '../../../context';
 import { getDailySessions } from '../sessions/scripts/scripts';
-import { getNotifications } from './scripts';
+import { getNotifications, retrieveStats } from './scripts';
+
+const findExpensesNumbers = (expenses: any) => {
+    const currentMonth = expenses.currentMonth;
+    const previousMonth = expenses.previousMonth;
+    const currentMonthTotal = currentMonth.reduce((acc: any, expense: any) => {
+        return acc + expense.quantity.$numberDecimal;
+    }, 0);
+    const previousMonthTotal = previousMonth.reduce((acc: any, expense: any) => {
+        return acc + expense.quantity.$numberDecimal;
+    }, 0);
+    let diff = ((parseFloat(currentMonthTotal) - parseFloat(previousMonthTotal)) / parseFloat(previousMonthTotal)) * 100
+    if(!previousMonthTotal) {
+        diff = 100;
+    }
+    return { total: currentMonthTotal, diff }
+}
+
+const findSessionNumbers = (sessions: any) => {
+    const currentMonth = sessions.currentMonth;
+    const previousMonth = sessions.previousMonth;
+    const currentMonthTotal = currentMonth.reduce((acc: any, session: any) => {
+        return acc + session.price;
+    }, 0);
+    const previousMonthTotal = previousMonth.reduce((acc: any, session: any) => {
+        return acc + session.price;
+    }, 0);
+    let diff = ((parseFloat(currentMonthTotal) - parseFloat(previousMonthTotal)) / parseFloat(previousMonthTotal)) * 100
+    if(!previousMonthTotal) {
+        diff = 100;
+    }
+    return { total: currentMonthTotal, diff }
+}
 
 export const Dashboard = () => {
     const stylesContext = useStylesContext();
@@ -27,6 +59,14 @@ export const Dashboard = () => {
     const [sessionData, setSessionData] = useState([]);
     const [sessionDataUpdated, setSessionDataUpdated] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [expenses, setExpenses] = useState({
+        currentMonth: [],
+        previousMonth: []
+    });
+    const [sessions, setSessions] = useState({
+        currentMonth: [],
+        previousMonth: []
+    });
 
     useEffect(() => {
         getDailySessions(navigate, messageApi).then(data => {
@@ -38,7 +78,15 @@ export const Dashboard = () => {
             if (data) {
                 setNotifications(data);
             }
-        })
+        });
+        retrieveStats(navigate, messageApi, "expenses").then(data => {
+            if (data)
+                setExpenses(data);
+        });
+        retrieveStats(navigate, messageApi, "sessions").then(data => {
+            if (data)
+                setSessions(data);
+        });
         setSessionDataUpdated(false);
     }, [sessionDataUpdated])
 
@@ -69,8 +117,8 @@ export const Dashboard = () => {
                             <MarketingStatsCard
                                 data={[497, 81, 274, 337]}
                                 title="revenue"
-                                diff={34.6}
-                                value={9321.92}
+                                diff={findSessionNumbers(sessions).diff}
+                                value={findSessionNumbers(sessions).total}
                                 asCurrency
                                 style={{ height: '100%' }}
                             />
@@ -79,8 +127,8 @@ export const Dashboard = () => {
                             <MarketingStatsCard
                                 data={[337, 274, 497, 81]}
                                 title="cost"
-                                diff={6.3}
-                                value={5550.0}
+                                diff={findExpensesNumbers(expenses).diff}
+                                value={findExpensesNumbers(expenses).total}
                                 asCurrency
                                 style={{ height: '100%' }}
                             />

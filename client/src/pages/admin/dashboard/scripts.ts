@@ -1,5 +1,5 @@
 import { BACKEND_URL } from "../../../constants";
-import { logout} from "../../authentication/scripts/login-scripts";
+import { logout } from "../../authentication/scripts/login-scripts";
 
 export const getNotifications = async (navigator: any, message: any) => {
     const response = await fetch(`${BACKEND_URL}/notifications/upcoming`, {
@@ -72,3 +72,22 @@ export const postponeNotification = async (navigator: any, message: any, notific
     }
 }
 
+export const retrieveStats = async (navigator: any, message: any, statsType: string) => {
+    const response = await fetch(`${BACKEND_URL}/stats/${statsType}`, {
+        method: "GET",
+        headers: {
+            "Content-type": "application/json"
+        },
+        credentials: 'include'
+    });
+    if (response.status === 401) {
+        logout(navigator, message);
+    } else if (response.status === 200) {
+        return await response.json();
+    } else {
+        message.open({
+            type: 'error',
+            content: "Something went wrong!"
+        })
+    }
+}

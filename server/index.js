@@ -10,6 +10,7 @@ const expensesRouter = require('./routers/expensesRouter');
 const clientRouter = require('./routers/client');
 const sessionRouter = require("./routers/session");
 const notificationRouter = require("./routers/notifications");
+const statisticsRouter = require('./routers/statistics');
 // const userProxy = require('./controllers/userProxy');
 
 const allowedOrigins = [
@@ -40,6 +41,7 @@ app.use('/expenses', expensesRouter);
 app.use('/clients', clientRouter);
 app.use("/notifications", notificationRouter);
 app.use("/session", sessionRouter);
+app.use('/stats', statisticsRouter);
 
 const port = 5443;
 
