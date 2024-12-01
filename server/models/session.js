@@ -13,6 +13,23 @@ const sessionSchema = new Schema({
   price: { type: Number, required: true }
 });
 
+sessionSchema.statics.getMonthlySessions = async function () {
+  const now = new Date();
+  const startOfCurrentMonth = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
+  const startOfNextMonth = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 1));
+  const startOfPreviousMonth = new Date(Date.UTC(now.getFullYear(), now.getMonth() - 1, 1));
+  const currentMonthSessions = await this.find({
+    date: { $gte: startOfCurrentMonth, $lt: startOfNextMonth },
+  }).exec();
+  const previousMonthSessions = await this.find({
+    date: { $gte: startOfPreviousMonth, $lt: startOfCurrentMonth },
+  }).exec();
+  return {
+    currentMonth: currentMonthSessions,
+    previousMonth: previousMonthSessions,
+  };
+};
+
 const Session = mongoose.model("Session", sessionSchema);
 
 module.exports = Session;
