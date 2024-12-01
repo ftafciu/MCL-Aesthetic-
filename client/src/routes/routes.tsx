@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate, useLocation } from 'react-router-dom';
 import {
-  AccountDeactivePage,
   Error400Page,
   Error403Page,
   Error404Page,
@@ -9,9 +8,6 @@ import {
   ErrorPage,
   PasswordResetPage,
   SignInPage,
-  SignUpPage,
-  VerifyEmailPage,
-  WelcomePage,
 } from '../pages';
 import {
   DashboardLayout,
@@ -30,6 +26,7 @@ import CreateSessionContent from '../pages/admin/sessions/CreateSessionContent.t
 import { DetailsPage } from '../pages/admin/profile/Details.tsx';
 import { SecurityPage } from '../pages/admin/profile/Security.tsx';
 import FinishedSessions from '../pages/admin/sessions/FinishedSessionContent.tsx';
+import { NewPassword } from '../pages/authentication/NewPassword.tsx';
 
 // Custom scroll restoration function
 export const ScrollToTop: React.FC = () => {
@@ -159,28 +156,16 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: 'signup',
-        element: <SignUpPage />,
-      },
-      {
         path: 'signin',
         element: <SafeRoute><SignInPage /></SafeRoute>,
-      },
-      {
-        path: 'welcome',
-        element: <WelcomePage />,
-      },
-      {
-        path: 'verify-email',
-        element: <VerifyEmailPage />,
       },
       {
         path: 'password-reset',
         element: <SafeRoute><PasswordResetPage /></SafeRoute>,
       },
       {
-        path: 'account-delete',
-        element: <AccountDeactivePage />,
+        path: 'new-password/:id/:token',
+        element: <SafeRoute><NewPassword /></SafeRoute>
       },
     ],
   },

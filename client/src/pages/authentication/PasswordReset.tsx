@@ -10,10 +10,10 @@ import {
   Typography,
 } from 'antd';
 import { useMediaQuery } from 'react-responsive';
-import { PATH_DASHBOARD } from '../../constants';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Sticker from "../../assets/login-img.png";
+import { requestPassowrdChange } from './scripts/auth-scripts';
 
 const { Title, Text } = Typography;
 
@@ -30,17 +30,16 @@ export const PasswordResetPage = () => {
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values: any) => {
-    console.log('Success:', values);
     setLoading(true);
-
-    message.open({
-      type: 'success',
-      content: 'Password reset link sent successfully',
-    });
-
-    setTimeout(() => {
-      navigate(PATH_DASHBOARD.default);
-    }, 5000);
+    requestPassowrdChange(values.email).then(response => {
+      if (response) {
+        message.open({
+          type: 'success',
+          content: 'Password reset link sent successfully',
+        });
+        navigate("/auth/signin");
+      }
+    })
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -48,7 +47,7 @@ export const PasswordResetPage = () => {
   };
 
   return (
-    <Row style={{ minHeight: isMobile ? 'auto' : '97vh', overflow: 'scroll', maxHeight:'100vh' }}>
+    <Row style={{ minHeight: isMobile ? 'auto' : '97vh', overflow: 'scroll', maxHeight: '100vh' }}>
       <Col xs={24} lg={12}>
         <Flex
           vertical
@@ -99,7 +98,9 @@ export const PasswordResetPage = () => {
                 >
                   Submit
                 </Button>
-                <Button type="text" size="middle" loading={loading}>
+                <Button type="text" size="middle" loading={loading} onClick={() => {
+                  navigate("/auth/signin")
+                }}>
                   Cancel
                 </Button>
               </Flex>

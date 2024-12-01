@@ -42,7 +42,7 @@ app.post("/forgot-password", async (req, res) => {
       if (error) {
         console.log(error);
       } else {
-        return res.send({ status: "Success" });
+        return res.status(200).json("Success");
       }
     });
   });
@@ -54,12 +54,13 @@ app.post("/reset-password/:id/:token", async (req, res) => {
 
   const check = await tokenManager.tokenChecker(token);
   if (!check.result) {
-    return res.json({ status: "Error with token" });
+    return res.status(200).json("Error with token")
   } else {
     bcrypt
       .hash(password, 10)
       .then((hash) => {
         login_controller.editUser(id, { password: hash });
+        res.status(200).json("Success");
       })
       .catch((err) => res.send({ status: err }));
   }

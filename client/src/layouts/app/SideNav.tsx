@@ -8,21 +8,18 @@ import {
   MenuOutlined,
   PieChartOutlined,
   ScheduleOutlined,
-  SecurityScanOutlined,
   UserAddOutlined,
   UserSwitchOutlined,
 } from '@ant-design/icons';
 import { Logo } from '../../components';
 import { Link, useLocation } from 'react-router-dom';
 import {
-  PATH_AUTH,
   PATH_DASHBOARD_ADMIN,
   PATH_CLIENTS,
   PATH_LANDING,
 } from '../../constants';
 import { COLOR } from '../../App.tsx';
 import { PATH_EXPENSES, PATH_SESSION } from '../../constants/routes.ts';
-import FinishedSessions from '../../pages/admin/sessions/FinishedSessionContent.tsx';
 
 const { Sider } = Layout;
 
@@ -57,29 +54,6 @@ const items: MenuProps['items'] = [
   ]),
   getItem(<Link to={PATH_EXPENSES.root}>Expenses</Link>, 'expenses', <DollarOutlined />),
 
-  getItem('Pages', 'pages', null, [], 'group'),
-
-  getItem('Authentication', 'authentication', <SecurityScanOutlined />, [
-    getItem(<Link to={PATH_AUTH.signin}>Sign In</Link>, 'auth-signin', null),
-    getItem(<Link to={PATH_AUTH.signup}>Sign Up</Link>, 'auth-signup', null),
-    getItem(<Link to={PATH_AUTH.welcome}>Welcome</Link>, 'auth-welcome', null),
-    getItem(
-      <Link to={PATH_AUTH.verifyEmail}>Verify email</Link>,
-      'auth-verify',
-      null
-    ),
-    getItem(
-      <Link to={PATH_AUTH.passwordReset}>Password reset</Link>,
-      'auth-password-reset',
-      null
-    ),
-    // getItem(<Link to={PATH_AUTH.passwordConfirm}>Passsword confirmation</Link>, 'auth-password-confirmation', null),
-    getItem(
-      <Link to={PATH_AUTH.accountDelete}>Account deleted</Link>,
-      'auth-account-deactivation',
-      null
-    ),
-  ]),
 ];
 
 const rootSubmenuKeys = ['dashboards', 'corporate', 'user-profile'];
