@@ -45,4 +45,8 @@ app.post("/time-range-profits", (req, res) => {
   });
 });
 
+app.post('/time-range-expenses', (req, res) => {
+
+});
+
 module.exports = app;
