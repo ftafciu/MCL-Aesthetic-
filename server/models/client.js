@@ -8,7 +8,7 @@ const BodyPartsSchema = new mongoose.Schema({
   legs: { type: Boolean, required: true, default: false },
   bikini: { type: Boolean, required: true, default: false },
   back: { type: Boolean, required: true, default: false },
-  abs: { type: Boolean, required: true, default: false }
+  abs: { type: Boolean, required: true, default: false },
 });
 
 const treatmentSchema = new mongoose.Schema({
@@ -16,33 +16,34 @@ const treatmentSchema = new mongoose.Schema({
   botox: { type: Boolean, required: true, default: false },
   mesotherapy: { type: Boolean, required: true, default: false },
   dermopen: { type: Boolean, required: true, default: false },
-  fillers: { type: Boolean, required: true, default: false }
-})
+  fillers: { type: Boolean, required: true, default: false },
+});
 
 const PlannedTreatmentSchema = new Schema({
   plannedFaceTreatment: { type: treatmentSchema, required: true },
   plannedBodyParts: { type: BodyPartsSchema, required: true },
-  plannedBodyTreatment: { type: Boolean, required: true, default: false }
-})
+  plannedBodyTreatment: { type: Boolean, required: true, default: false },
+});
 
 const clientSchema = new Schema({
   name: { type: String, required: true },
   surname: { type: String, required: true },
   email: { type: String, required: true },
   phoneNumber: {
-    type: String, required: true, validate: {
-      validator: function (value) {
-        const regex = /^\+3556[789]\d{7}$/;
-        return regex.test(value);
-      },
-      message: props => `${props.value} is not a valid phone number!`
-    }, unique: true
+    type: String,
+    required: true,
+    unique: true,
   },
   age: { type: Number, required: true },
   birthday: { type: Date, required: true },
-  status: { type: String, enum: ['new', 'in-progress', 'done'], required: true, default: 'new' },
+  status: {
+    type: String,
+    enum: ["new", "in-progress", "done"],
+    required: true,
+    default: "new",
+  },
   plannedTreatment: { type: PlannedTreatmentSchema, required: true },
-  pdfId: { type: String, required: false }
+  pdfId: { type: String, required: false },
 });
 
 const Client = mongoose.model("Client", clientSchema);

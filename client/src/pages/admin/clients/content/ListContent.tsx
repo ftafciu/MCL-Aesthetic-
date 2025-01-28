@@ -8,6 +8,7 @@ import { Button, Card, message, Table } from "antd";
 import { useEffect, useState } from "react";
 import { deleteClient, getClients } from "../scripts/client-scripts";
 import ConfirmModal from "../../../../components/ConfirmModal";
+import TotalCard from "../../../../components/Card/TotalCard/TotalCard.tsx"
 
 function ListContent() {
     const SELLER_COLUMNS = [
@@ -100,7 +101,10 @@ function ListContent() {
                     },
                 ]}
             />
-            <Card title="Client list">
+            <Card title="Client list" extra={
+                <div style={{ display: 'flex', alignItems: 'center', height: '120px'}}>
+                    <TotalCard total={clients?.length} title={'Total clients'}/>
+                </div>}>
                 <Table
                     columns={SELLER_COLUMNS}
                     dataSource={clients}

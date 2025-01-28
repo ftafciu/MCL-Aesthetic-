@@ -8,6 +8,7 @@ import { InputNumber } from 'antd';
 import { createExpense, deleteExpense, getExpenses, getExpensesByTimeRange } from "./scripts/scripts";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../../../components/ConfirmModal";
+import TotalCard from "../../../components/Card/TotalCard/TotalCard"
 
 const { RangePicker } = DatePicker;
 
@@ -112,6 +113,11 @@ function ExpensePage() {
                             loading={loading}
                             className="overflow-scroll"
                         />
+                        <div style={{ display: 'flex', alignItems: 'center', height: '120px'}}>
+                    <TotalCard total={data?.reduce((acc:number, item:any)=>{
+                        return Number(acc)+Number(item.quantity.$numberDecimal);
+                    },0)} title={'Total expenses'}/>
+                </div>
                     </Card>
                 </Col>
                 <Col span={11}>

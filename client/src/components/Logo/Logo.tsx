@@ -44,10 +44,11 @@ export const Logo = ({
             padding: `4px 8px`,
             backgroundColor: bgColor,
             borderRadius,
-            fontFamily: "DynaPuff"
+            fontFamily: "Lilita One",
+            fontSize: `18px`
           }}
         >
-          MCL aestethics
+          MCL AESTHETICS
         </Typography.Title>
       </Flex>
   ) : (

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import "./SiveNav.css"
 import { ConfigProvider, Layout, Menu, MenuProps, SiderProps } from 'antd';
 import {
   BookOutlined,
@@ -63,6 +64,17 @@ type SideNavProps = SiderProps;
 const SideNav = ({ ...others }: SideNavProps) => {
   const nodeRef = useRef(null);
   const { pathname } = useLocation();
+
+  const hasChildren = (
+    item: MenuItem | null | undefined
+  ): item is MenuItem & { children: MenuItem[] } => {
+    return !!item && 'children' in item && Array.isArray(item.children);
+  };
+
+  const parentKeys = (items ?? [])
+    .filter((item): item is MenuItem => !!item)
+    .filter(hasChildren) 
+    .map((item) => item.key as string);                                   
   const [openKeys, setOpenKeys] = useState(['']);
   const [current, setCurrent] = useState('');
 
@@ -85,6 +97,15 @@ const SideNav = ({ ...others }: SideNavProps) => {
     setCurrent(paths[paths.length - 1]);
   }, [pathname]);
 
+  useEffect(() => {
+    setOpenKeys(parentKeys);
+  }, [parentKeys]);
+
+   useEffect(() => {
+    const paths = pathname.split('/');
+    setCurrent(paths[paths.length - 1]);
+  }, [pathname]);
+  
   return (
     <Sider ref={nodeRef} breakpoint="lg" collapsedWidth="0" {...others}>
       <Logo
@@ -116,6 +137,7 @@ const SideNav = ({ ...others }: SideNavProps) => {
           onOpenChange={onOpenChange}
           selectedKeys={[current]}
           style={{ border: 'none' }}
+          className="no-caret"
         />
       </ConfigProvider>
     </Sider>
