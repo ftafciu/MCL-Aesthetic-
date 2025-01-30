@@ -45,6 +45,12 @@ app.use('/stats', statisticsRouter);
 
 const port = 5443;
 
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "/client/build/index.html"))
+);
+
 connectToDb(async (err) => {
   if (err) {
     console.log("Sth went wrong with the server");
