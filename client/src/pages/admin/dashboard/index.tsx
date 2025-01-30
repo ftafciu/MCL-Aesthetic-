@@ -1,52 +1,115 @@
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Card,
     DeliveryRequestCard,
-    GetStartedCard,
-    Loader,
     MarketingStatsCard,
-    NotificationsCard,
     PageHeader,
     ProjectsCard,
-    TasksChartCard,
-    TasksListCard,
-    WeeklyActivityCard,
 } from '../../../components';
 import {
-    Alert,
-    Button,
-    CardProps,
     Carousel,
-    CarouselProps,
     Col,
-    Flex,
+    Empty,
+    message,
     Row,
-    Typography,
+    DatePicker
 } from 'antd';
-import { HomeOutlined, PieChartOutlined } from '@ant-design/icons';
-import { DASHBOARD_ITEMS } from '../../../constants';
-import { Link } from 'react-router-dom';
+import { HomeOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useStylesContext } from '../../../context';
-import { useFetchData } from '../../../hooks';
-import { Projects } from '../../../types';
-import CountUp from 'react-countup';
+import { getDailySessions } from '../sessions/scripts/scripts';
+import { filterExpenses, filterProfits, getNotifications, retrieveStats } from './scripts';
+
+const { RangePicker } = DatePicker;
+
+const findExpensesNumbers = (expenses: any) => {
+    const currentMonth = expenses.currentMonth;
+    const previousMonth = expenses.previousMonth;
+    const currentMonthTotal = currentMonth.reduce((acc: any, expense: any) => {
+        return acc + expense.quantity.$numberDecimal;
+    }, 0);
+    const previousMonthTotal = previousMonth.reduce((acc: any, expense: any) => {
+        return acc + expense.quantity.$numberDecimal;
+    }, 0);
+    let diff = ((parseFloat(currentMonthTotal) - parseFloat(previousMonthTotal)) / parseFloat(previousMonthTotal)) * 100
+    if (!previousMonthTotal) {
+        diff = 100;
+    }
+    return { total: currentMonthTotal, diff }
+}
+
+const findSessionNumbers = (sessions: any) => {
+    const currentMonth = sessions.currentMonth;
+    const previousMonth = sessions.previousMonth;
+    const currentMonthTotal = currentMonth.reduce((acc: any, session: any) => {
+        return acc + session.price;
+    }, 0);
+    const previousMonthTotal = previousMonth.reduce((acc: any, session: any) => {
+        return acc + session.price;
+    }, 0);
+    let diff = ((parseFloat(currentMonthTotal) - parseFloat(previousMonthTotal)) / parseFloat(previousMonthTotal)) * 100
+    if (!previousMonthTotal) {
+        diff = 100;
+    }
+    return { total: currentMonthTotal, diff }
+}
 
 export const Dashboard = () => {
+    const [profitData, setProfitData] = useState<any>({});
+    const [expenseData, setExpenseData] = useState<any>({});
+    const [dateFilter, setDateFilter] = useState<null | any>(null);
     const stylesContext = useStylesContext();
-    const {
-        data: projectsData,
-        error: projectsDataError,
-        loading: projectsDataLoading,
-    } = useFetchData('../mocks/Projects.json');
-    const {
-        data: trucksDeliveryRequestData,
-        loading: trucksDeliveryRequestDataLoading,
-        error: trucksDeliveryRequestDataError,
-    } = useFetchData('../mocks/TruckDeliveryRequest.json');
+    const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
+    const [sessionData, setSessionData] = useState([]);
+    const [sessionDataUpdated, setSessionDataUpdated] = useState(false);
+    const [notifications, setNotifications] = useState([]);
+    const [expenses, setExpenses] = useState({
+        currentMonth: [],
+        previousMonth: []
+    });
+    const [sessions, setSessions] = useState({
+        currentMonth: [],
+        previousMonth: []
+    });
+
+    useEffect(() => {
+        getDailySessions(navigate, messageApi).then(data => {
+            if (data) {
+                setSessionData(data);
+            }
+        });
+        getNotifications(navigate, messageApi).then(data => {
+            if (data) {
+                setNotifications(data);
+            }
+        });
+        if (dateFilter) {
+            filterProfits(navigate, messageApi, dateFilter.startDate, dateFilter.endDate).then(data => {
+                if (data)
+                    setProfitData(data);
+            });
+            filterExpenses(navigate, messageApi, dateFilter.startDate, dateFilter.endDate).then(data => {
+                if (data)
+                    setExpenseData(data);
+            });
+        } else {
+            retrieveStats(navigate, messageApi, "expenses").then(data => {
+                if (data)
+                    setExpenses(data);
+            });
+            retrieveStats(navigate, messageApi, "sessions").then(data => {
+                if (data)
+                    setSessions(data);
+            });
+        }
+        setSessionDataUpdated(false);
+    }, [sessionDataUpdated, dateFilter])
 
     return (
         <div>
+            {contextHolder}
             <Helmet>
                 <title>Admin | Dashboard</title>
             </Helmet>
@@ -66,67 +129,66 @@ export const Dashboard = () => {
             />
             <Row>
                 <Col span={11} offset={0.5} style={{ marginRight: '30px' }}>
-                    <Row {...stylesContext?.rowProps} style={{ marginBottom: '10px' }}>
-                        <Col span={12}>
-                            <MarketingStatsCard
-                                data={[497, 81, 274, 337]}
-                                title="revenue"
-                                diff={34.6}
-                                value={9321.92}
-                                asCurrency
-                                style={{ height: '100%' }}
-                            />
-                        </Col>
-                        <Col span={12}>
-                            <MarketingStatsCard
-                                data={[337, 274, 497, 81]}
-                                title="cost"
-                                diff={6.3}
-                                value={5550.0}
-                                asCurrency
-                                style={{ height: '100%' }}
-                            />
-                        </Col>
-                    </Row>
+                    <Card
+                        title="Statistics"
+                        style={{ marginBottom: '10px' }}
+                    >
+                        <RangePicker style={{ marginBottom: '10px', width: '100%' }} onChange={(dates, dateStrings) => {
+                            if (dates) {
+                                setDateFilter({ startDate: dates?.[0], endDate: dates?.[1] })
+                            } else {
+                                setDateFilter(null);
+                            }
+                        }} />
+                        <Row {...stylesContext?.rowProps} style={{ marginBottom: '10px' }}>
+                            <Col span={12}>
+                                <MarketingStatsCard
+                                    data={[497, 81, 274, 337]}
+                                    title="revenue"
+                                    value={profitData?.value || findSessionNumbers(sessions).total}
+                                    asCurrency
+                                    style={{ height: '100%' }}
+                                />
+                            </Col>
+                            <Col span={12}>
+                                <MarketingStatsCard
+                                    data={[337, 274, 497, 81]}
+                                    title="cost"
+                                    value={expenseData?.value || findExpensesNumbers(expenses).total}
+                                    asCurrency
+                                    style={{ height: '100%' }}
+                                />
+                            </Col>
+                        </Row>
+                    </Card>
                     <Row>
                         <Col>
                             <Card
-                                title="Recently added projects"
-                                extra={<Button>View all projects</Button>}
+                                title="Upcoming Sessions"
+                                style={{ width: '465px' }}
                             >
-                                {projectsDataError ? (
-                                    <Alert
-                                        message="Error"
-                                        description={projectsDataError.toString()}
-                                        type="error"
-                                        showIcon
-                                    />
-                                ) : projectsDataLoading ? (
-                                    <Loader />
-                                ) : (
-                                    <Carousel arrows autoplay>
-                                        {projectsData.slice(0, 4).map((o: Projects) => {
-                                            return (
-                                                <div>
-                                                    <ProjectsCard
-                                                        project={o}
-                                                        type="inner"
-                                                        style={{ width: '100%', height: 'fit-content' }}
-                                                    />
-                                                </div>
-                                            );
-                                        })}
-                                    </Carousel>
-                                )}
+                                <Carousel arrows autoplay>
+                                    {notifications.length ? notifications.map((o: any) => {
+                                        return (
+                                            <div>
+                                                <ProjectsCard
+                                                    project={o}
+                                                    type="inner"
+                                                    style={{ width: '100%', height: 'fit-content' }}
+                                                />
+                                            </div>
+                                        );
+                                    }) : <div><Empty /></div>}
+                                </Carousel>
                             </Card>
                         </Col>
                     </Row>
                 </Col>
                 <Col xs={24} xl={12}>
                     <DeliveryRequestCard
-                        data={trucksDeliveryRequestData}
-                        loading={trucksDeliveryRequestDataLoading}
-                        error={trucksDeliveryRequestDataError}
+                        data={sessionData}
+                        seeAll={true}
+                        dependency={setSessionDataUpdated}
                     />
                 </Col>
             </Row>

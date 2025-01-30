@@ -1,23 +1,37 @@
 import { Badge, Button, CardProps, Flex, List, Space, Typography } from 'antd';
-import { DeliveryRequest } from '../../../../types';
 import { Card, UserAvatar } from '../../../index.ts';
 
 import './styles.css';
 import { ReactNode } from 'react';
 import { CalendarOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
+import FinishSessionModal from '../../../../pages/admin/sessions/components/FinishSessionModal.tsx';
 
 type Props = {
-  data?: DeliveryRequest[];
+  data?: any[];
   loading?: boolean;
   error?: ReactNode;
+  dependency?: any;
+  seeAll?: boolean;
 } & CardProps;
 
-export const DeliveryRequestCard = ({ data, ...others }: Props) => {
+const generateBodyPartsString = (bodyParts: any) => {
+  let bodyPartsString = ''
+  for (let key in bodyParts) {
+    if (bodyParts[key] && key !== '_id')
+      bodyPartsString += `${key} `;
+  }
+  return bodyPartsString;
+}
+
+export const DeliveryRequestCard = ({ data, dependency, seeAll, ...others }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <Card
-      title="Recent request"
+      title="Sessions list"
       className="delivery-request-card card"
-      extra={<Button>See all</Button>}
+      extra={seeAll && <Button onClick={() => navigate('/sessions')}>See all</Button>}
       {...others}
     >
       <List
@@ -32,45 +46,68 @@ export const DeliveryRequestCard = ({ data, ...others }: Props) => {
         }}
         dataSource={data}
         renderItem={(item) => (
-          <List.Item key={item.id}>
+          <List.Item key={item._id}>
             <Space style={{ justifyContent: 'space-between', width: '100%' }}>
               <Flex vertical gap="small">
                 <Typography.Text strong style={{ textTransform: 'capitalize' }}>
-                  {item.name}
+                  {item?.name}
                 </Typography.Text>
+                <Badge
+                  color="red"
+                  text={
+                    <Typography.Text>
+                      Client status: {item.client.status}
+                    </Typography.Text>
+                  }
+                />
                 <Badge
                   color="geekblue"
                   text={
                     <Typography.Text>
-                      From: {item.delivery_location}
+                      Session type: {item.type}
                     </Typography.Text>
                   }
                 />
-                <Badge
-                  color="magenta"
-                  text={
-                    <Typography.Text>
-                      To: {item.pickup_location}
-                    </Typography.Text>
-                  }
-                />
+                {
+                  item.treatment &&
+                  <Badge
+                    color="green"
+                    text={
+                      <Typography.Text>
+                        Treatments: {generateBodyPartsString(item.treatment)}
+                      </Typography.Text>
+                    }
+                  />
+                }
+                {
+                  item.bodyParts &&
+                  <Badge
+                    color="green"
+                    text={
+                      <Typography.Text>
+                        Body parts: {generateBodyPartsString(item.bodyParts)}
+                      </Typography.Text>
+                    }
+                  />
+                }
               </Flex>
               <Flex vertical align="flex-end" gap="small">
                 <Flex gap={4} align="center">
                   <CalendarOutlined />
-                  <Typography.Text>{item.delivery_date}</Typography.Text>
+                  <Typography.Text>{item.date.slice(0, 10)}</Typography.Text>
                 </Flex>
                 <UserAvatar
-                  fullName={item.driver_name}
+                  fullName={`${item.client.name} ${item.client.surname}`}
                   align="flex-end"
                   textWidth="auto"
                 />
                 <Flex gap={4}>
                   <Typography.Text>Contact:</Typography.Text>
-                  <Typography.Link href={`tel:${item.contact_number}`}>
-                    {item.contact_number}
+                  <Typography.Link href={`tel:${item.client.phoneNumber}`}>
+                    {item.client.phoneNumber}
                   </Typography.Link>
                 </Flex>
+                {!item?.price && <FinishSessionModal dependency={dependency} sessionId={item._id}/>}
               </Flex>
             </Space>
           </List.Item>

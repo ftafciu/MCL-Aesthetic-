@@ -9,12 +9,41 @@ export const authorize = async (navigator: any, pathname: string) => {
     credentials: "include",
   });
   if (response.status === 401) {
-    if (!pathname.includes("/auth/signin")) navigator("/auth/signin");
+    if (!pathname.includes("/auth")) navigator("/auth/signin");
   } else if (response.status === 200) {
-    const user = await response.json();
-    if (!pathname.includes("/auth") && user.role === "client")
-      navigator("/auth/signin");
-    if (pathname.includes("/auth") && user.role === "admin")
+    if (pathname.includes("/auth"))
       navigator("/dashboard");
   }
 };
+
+export const requestPassowrdChange = async (email: string) => {
+  const response = await fetch(`${BACKEND_URL}/auth/forgot-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ email })
+  });
+  if (response.status === 200) {
+    return true;
+  }
+  return false;
+}
+
+export const resetPassword = async (id: string | undefined, token: string | undefined, password: string) => {
+  if (token && id) {
+    const response = await fetch(`${BACKEND_URL}/auth/reset-password/${id}/${token}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ password })
+    });
+    if (response.status === 200) {
+      return true;
+    }
+  }
+  return false;
+}

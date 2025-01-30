@@ -1,9 +1,11 @@
 import {
   Card as AntdCard,
+  Button,
   CardProps,
   Descriptions,
   DescriptionsProps,
   Flex,
+  message,
   Tooltip,
   Typography,
 } from 'antd';
@@ -15,102 +17,82 @@ import {
 import { Projects } from '../../../../types';
 
 import './styles.css';
+import { useNavigate } from 'react-router-dom';
+import { changeStatus } from '../../../../pages/admin/dashboard/scripts';
+import PostponeModal from './PostponeModal';
 
 const { Text, Title } = Typography;
 
 type Props = {
-  project: Projects;
+  project: any;
   size?: 'small' | 'default';
 } & CardProps;
 
 export const ProjectsCard = (props: Props) => {
+  const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
   const {
     size,
     project: {
-      client_name,
-      end_date,
-      project_duration,
-      project_manager,
-      project_name,
-      project_type,
-      project_location,
-      priority,
-      team_size,
-      status,
+      _id,
+      client,
+      nextSessionDate,
+      type,
     },
     ...others
   } = props;
 
   const items: DescriptionsProps['items'] = [
     {
-      key: 'project_name',
-      label: 'Title',
+      key: 'name',
+      label: 'Name',
       children: (
-        <span className="text-capitalize">{project_name.slice(0, 36)}...</span>
+        <span className="text-capitalize">{client.name}</span>
       ),
       span: 24,
     },
     {
-      key: 'project_manager',
-      label: 'Manager',
-      children: project_manager,
+      key: 'surname',
+      label: 'Surname',
+      children: client.surname,
       span: 24,
     },
     {
-      key: 'project_client',
-      label: 'Client',
-      children: client_name,
+      key: 'phoneNumber',
+      label: 'Phone Number',
+      children: client.phoneNumber,
       span: 24,
     },
     {
-      key: 'project_type',
-      label: 'Type',
-      children: <span className="text-capitalize">{project_type}</span>,
+      key: 'age',
+      label: 'Age',
+      children: <span className="text-capitalize">{client.age}</span>,
       span: 24,
     },
     {
-      key: 'project_location',
-      label: 'Location',
-      children: project_location,
+      key: 'sessionDate',
+      label: 'Session Date',
+      children: <span>{nextSessionDate.slice(0, 10)}</span>,
       span: 24,
     },
     {
-      key: 'project_priority',
-      label: 'Priority',
-      children: <span className="text-capitalize">{priority}</span>,
-    },
-    {
-      key: 'project_status',
-      label: 'Status',
-      children: <span className="text-capitalize">{status}</span>,
-    },
-    {
-      key: 'team_size',
-      label: <UsergroupAddOutlined />,
-      children: (
-        <Tooltip title="Team size">
-          <Typography.Text>{team_size}</Typography.Text>
-        </Tooltip>
-      ),
-    },
-    {
-      key: 'period',
-      label: <ClockCircleOutlined />,
-      children: (
-        <Tooltip title="Project duration (months)">
-          <Typography.Text>{project_duration}</Typography.Text>
-        </Tooltip>
-      ),
-    },
-    {
-      key: 'end_date',
-      label: <CalendarOutlined />,
-      children: (
-        <Tooltip title="Project end date">
-          <Typography.Text>{end_date}</Typography.Text>
-        </Tooltip>
-      ),
-    },
+      key: "button",
+      label: "",
+      children: <Flex flex='row' justify='space-between' style={{ width: '70%'}}>
+        <Button style={{ backgroundColor: "#4169E1", color: 'white' }} onClick={() => {
+          navigate('/sessions/create-session', {
+            state: {
+                notificationClient: client,
+                notificationId: _id
+            },
+        });
+        }}>Reserve</Button>
+        <Button style={{ backgroundColor: "red", color: 'white' }} onClick={() => {
+          changeStatus(navigate, messageApi, _id)
+        }}>Cancel</Button>
+        <PostponeModal notificationId={_id}/>
+      </Flex>
+    }
   ];
 
   return size === 'small' ? (
@@ -120,25 +102,23 @@ export const ProjectsCard = (props: Props) => {
       className="project-small-card"
       {...others}
     >
-      <Title level={5} className="text-capitalize m-0">
-        {project_name.slice(0, 15)}
-      </Title>
+      {contextHolder}
       <br />
       <Flex wrap="wrap" gap="small" className="text-capitalize">
         <Text>
-          Owner: <b>{project_manager},</b>
+          Name: <b>{client.name},</b>
         </Text>
         <Text>
-          Client: <b>{client_name},</b>
+          Surname: <b>{client.surname},</b>
         </Text>
         <Text>
-          Priority: <b>{priority},</b>
+          Phone Number: <b>{client.phoneNumber},</b>
         </Text>
         <Text>
-          Type: <b>{project_type},</b>
+          Age: <b>{client.age},</b>
         </Text>
         <Text>
-          Location: <b>{project_location}</b>
+          Session Date: <b>{nextSessionDate.slice(0, 10)}</b>
         </Text>
       </Flex>
     </AntdCard>

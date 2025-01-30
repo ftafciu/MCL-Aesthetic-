@@ -27,6 +27,23 @@ const expensesSchema = new Schema(
   { timestamps: true }
 );
 
+expensesSchema.statics.getMonthlyExpenses = async function () {
+  const now = new Date();
+  const startOfCurrentMonth = new Date(Date.UTC(now.getFullYear(), now.getMonth(), 1));
+  const startOfNextMonth = new Date(Date.UTC(now.getFullYear(), now.getMonth() + 1, 1));
+  const startOfPreviousMonth = new Date(Date.UTC(now.getFullYear(), now.getMonth() - 1, 1));
+  const currentMonthExpenses = await this.find({
+    date: { $gte: startOfCurrentMonth, $lt: startOfNextMonth },
+  }).exec();
+  const previousMonthExpenses = await this.find({
+    date: { $gte: startOfPreviousMonth, $lt: startOfCurrentMonth },
+  }).exec();
+  return {
+    currentMonth: currentMonthExpenses,
+    previousMonth: previousMonthExpenses,
+  };
+};
+
 const Expenses = mongoose.model("Expenses", expensesSchema);
 
 module.exports = Expenses;

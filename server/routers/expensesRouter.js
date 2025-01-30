@@ -20,6 +20,6 @@ router.post("/getByTimeRange", expensesController.getExpensesByTimeRange);
 
 router.put("/updateExpense", expensesController.updateExpenses);
 
-router.delete("/deleteExpense", expensesController.deleteExpense);
+router.delete("/deleteExpense/:expenseId", expensesController.deleteExpense);
 
 module.exports = router;

@@ -66,6 +66,17 @@ const getExpensesByTimeRange = async (req, res) => {
   }
 };
 
+const expensesByTimeRange = async (startDate, endDate) => {
+  try {
+    const expenses = await Expenses.find({
+      date: { $gte: new Date(startDate), $lte: new Date(endDate) },
+    });
+    return { result: true, expenses };
+  } catch (error) {
+    return { result: false, message: error.message };
+  }
+};
+
 const updateExpenses = async (req, res) => {
   try {
     const { id, newInfo } = req.body;
@@ -99,6 +110,7 @@ module.exports = {
   getAllExpenses,
   getExpenseById,
   getExpenseByName,
+  expensesByTimeRange,
   getExpensesByTimeRange,
   updateExpenses,
   deleteExpense,
