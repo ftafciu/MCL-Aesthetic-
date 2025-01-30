@@ -91,3 +91,47 @@ export const retrieveStats = async (navigator: any, message: any, statsType: str
         })
     }
 }
+
+export const filterProfits = async(navigator: any, message: any, startDate: Date, endDate: Date)=>{
+    const response = await fetch(`${BACKEND_URL}/stats/time-range-profits`, {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json"
+        },
+        credentials: 'include',
+        body: JSON.stringify({startDate, endDate})
+    })
+    if (response.status === 401) {
+        logout(navigator, message);
+    } else if (response.status === 200) {
+        return await response.json();
+    } else {
+        message.open({
+            type: 'error',
+            content: "Something went wrong!"
+        })
+    }
+
+}
+
+export const filterExpenses = async(navigator: any, message: any, startDate: Date, endDate: Date)=>{
+    const response = await fetch(`${BACKEND_URL}/stats/time-range-expenses`, {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json"
+        },
+        credentials: 'include',
+        body: JSON.stringify({startDate, endDate})
+    })
+    if (response.status === 401) {
+        logout(navigator, message);
+    } else if (response.status === 200) {
+        return await response.json();
+    } else {
+        message.open({
+            type: 'error',
+            content: "Something went wrong!"
+        })
+    }
+
+}

@@ -30,13 +30,11 @@ type Props = {
   title: string;
   value: number | string;
   data: ChartData;
-  diff: number;
   asCurrency?: boolean;
 } & CardProps;
 
 export const StatsCard = ({
   data,
-  diff,
   title,
   value,
   asCurrency,
@@ -65,10 +63,6 @@ export const StatsCard = ({
             <ColumnChart data={data} />
           </Col>
         </Row>
-        <Flex align="center">
-          <Tag color={diff < 0 ? 'red' : 'green'}>{diff}%</Tag>
-          <Typography.Text>compared to last month.</Typography.Text>
-        </Flex>
       </Flex>
     </Card>
   );

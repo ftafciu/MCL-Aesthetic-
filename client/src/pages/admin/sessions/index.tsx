@@ -54,7 +54,6 @@ function SessionPage() {
             })
         } else {
             getSessions(navigator, messageApi).then(data => {
-                console.log(data);
                 setData(data);
                 setLoading(false);
             })

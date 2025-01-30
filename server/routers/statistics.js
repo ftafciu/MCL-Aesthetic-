@@ -45,8 +45,18 @@ app.post("/time-range-profits", (req, res) => {
   });
 });
 
-app.post('/time-range-expenses', (req, res) => {
-
+app.post("/time-range-expenses", (req, res) => {
+  login_controller.authorize(req, res, async () => {
+    const response = await statisticsRepo.getTimeRangeExpenses(
+      req.body.startDate,
+      req.body.endDate
+    );
+    if (response.result) {
+      res.status(200).json(response.data);
+    } else {
+      res.status(400).json({ message: response.message });
+    }
+  });
 });
 
 module.exports = app;

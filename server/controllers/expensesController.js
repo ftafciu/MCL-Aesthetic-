@@ -69,7 +69,7 @@ const getExpensesByTimeRange = async (req, res) => {
 const expensesByTimeRange = async (startDate, endDate) => {
   try {
     const expenses = await Expenses.find({
-      date: { $gte: new Date(firstDate), $lte: new Date(lastDate) },
+      date: { $gte: new Date(startDate), $lte: new Date(endDate) },
     });
     return { result: true, expenses };
   } catch (error) {

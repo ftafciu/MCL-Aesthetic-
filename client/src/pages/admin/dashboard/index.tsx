@@ -12,13 +12,16 @@ import {
     Empty,
     message,
     Row,
+    DatePicker
 } from 'antd';
 import { HomeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useStylesContext } from '../../../context';
 import { getDailySessions } from '../sessions/scripts/scripts';
-import { getNotifications, retrieveStats } from './scripts';
+import { filterExpenses, filterProfits, getNotifications, retrieveStats } from './scripts';
+
+const { RangePicker } = DatePicker;
 
 const findExpensesNumbers = (expenses: any) => {
     const currentMonth = expenses.currentMonth;
@@ -30,7 +33,7 @@ const findExpensesNumbers = (expenses: any) => {
         return acc + expense.quantity.$numberDecimal;
     }, 0);
     let diff = ((parseFloat(currentMonthTotal) - parseFloat(previousMonthTotal)) / parseFloat(previousMonthTotal)) * 100
-    if(!previousMonthTotal) {
+    if (!previousMonthTotal) {
         diff = 100;
     }
     return { total: currentMonthTotal, diff }
@@ -46,13 +49,16 @@ const findSessionNumbers = (sessions: any) => {
         return acc + session.price;
     }, 0);
     let diff = ((parseFloat(currentMonthTotal) - parseFloat(previousMonthTotal)) / parseFloat(previousMonthTotal)) * 100
-    if(!previousMonthTotal) {
+    if (!previousMonthTotal) {
         diff = 100;
     }
     return { total: currentMonthTotal, diff }
 }
 
 export const Dashboard = () => {
+    const [profitData, setProfitData] = useState<any>({});
+    const [expenseData, setExpenseData] = useState<any>({});
+    const [dateFilter, setDateFilter] = useState<null | any>(null);
     const stylesContext = useStylesContext();
     const navigate = useNavigate();
     const [messageApi, contextHolder] = message.useMessage();
@@ -79,16 +85,27 @@ export const Dashboard = () => {
                 setNotifications(data);
             }
         });
-        retrieveStats(navigate, messageApi, "expenses").then(data => {
-            if (data)
-                setExpenses(data);
-        });
-        retrieveStats(navigate, messageApi, "sessions").then(data => {
-            if (data)
-                setSessions(data);
-        });
+        if (dateFilter) {
+            filterProfits(navigate, messageApi, dateFilter.startDate, dateFilter.endDate).then(data => {
+                if (data)
+                    setProfitData(data);
+            });
+            filterExpenses(navigate, messageApi, dateFilter.startDate, dateFilter.endDate).then(data => {
+                if (data)
+                    setExpenseData(data);
+            });
+        } else {
+            retrieveStats(navigate, messageApi, "expenses").then(data => {
+                if (data)
+                    setExpenses(data);
+            });
+            retrieveStats(navigate, messageApi, "sessions").then(data => {
+                if (data)
+                    setSessions(data);
+            });
+        }
         setSessionDataUpdated(false);
-    }, [sessionDataUpdated])
+    }, [sessionDataUpdated, dateFilter])
 
     return (
         <div>
@@ -112,28 +129,38 @@ export const Dashboard = () => {
             />
             <Row>
                 <Col span={11} offset={0.5} style={{ marginRight: '30px' }}>
-                    <Row {...stylesContext?.rowProps} style={{ marginBottom: '10px' }}>
-                        <Col span={12}>
-                            <MarketingStatsCard
-                                data={[497, 81, 274, 337]}
-                                title="revenue"
-                                diff={findSessionNumbers(sessions).diff}
-                                value={findSessionNumbers(sessions).total}
-                                asCurrency
-                                style={{ height: '100%' }}
-                            />
-                        </Col>
-                        <Col span={12}>
-                            <MarketingStatsCard
-                                data={[337, 274, 497, 81]}
-                                title="cost"
-                                diff={findExpensesNumbers(expenses).diff}
-                                value={findExpensesNumbers(expenses).total}
-                                asCurrency
-                                style={{ height: '100%' }}
-                            />
-                        </Col>
-                    </Row>
+                    <Card
+                        title="Statistics"
+                        style={{ marginBottom: '10px' }}
+                    >
+                        <RangePicker style={{ marginBottom: '10px', width: '100%' }} onChange={(dates, dateStrings) => {
+                            if (dates) {
+                                setDateFilter({ startDate: dates?.[0], endDate: dates?.[1] })
+                            } else {
+                                setDateFilter(null);
+                            }
+                        }} />
+                        <Row {...stylesContext?.rowProps} style={{ marginBottom: '10px' }}>
+                            <Col span={12}>
+                                <MarketingStatsCard
+                                    data={[497, 81, 274, 337]}
+                                    title="revenue"
+                                    value={profitData?.value || findSessionNumbers(sessions).total}
+                                    asCurrency
+                                    style={{ height: '100%' }}
+                                />
+                            </Col>
+                            <Col span={12}>
+                                <MarketingStatsCard
+                                    data={[337, 274, 497, 81]}
+                                    title="cost"
+                                    value={expenseData?.value || findExpensesNumbers(expenses).total}
+                                    asCurrency
+                                    style={{ height: '100%' }}
+                                />
+                            </Col>
+                        </Row>
+                    </Card>
                     <Row>
                         <Col>
                             <Card
