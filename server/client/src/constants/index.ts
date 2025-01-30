@@ -42,7 +42,7 @@ const ERROR_ITEMS = [
   { title: '503', path: PATH_ERROR.error503 },
 ];
 
-const BACKEND_URL = 'http://localhost:5443';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export {
   PATH_DASHBOARD,
