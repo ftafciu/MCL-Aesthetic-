@@ -48,10 +48,10 @@ const port = 5443;
 const path = require("path");
 __dirname = path.resolve();
 
-app.use(express.static(path.join(__dirname, "/client/build")));
+app.use(express.static(path.join(__dirname, "/client/dist")));
 
 app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "/client/build/index.html"))
+  res.sendFile(path.join(__dirname, "/client/dist/index.html"))
 );
 
 connectToDb(async (err) => {
