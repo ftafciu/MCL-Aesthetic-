@@ -65,9 +65,9 @@ export const SignInPage = () => {
           align={isMobile ? 'center' : 'flex-start'}
           justify="center"
           gap="middle"
-          style={{ height: '100%', background: "#f5f3ef", paddingLeft: "70px"}}
+          style={{ height: '100%', background: "#f5f3ef", paddingLeft: "70px" }}
         >
-          <Title className="m-0" style={{color:"#d5a4a5", paddingLeft:"200px", paddingBottom:"40px"}} >Login</Title>
+          <Title className="m-0" style={{ color: "#d5a4a5", paddingLeft: "200px", paddingBottom: "40px" }} >Login</Title>
           <Form
             name="sign-up-form"
             layout="vertical"
@@ -82,7 +82,7 @@ export const SignInPage = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
             requiredMark={false}
-            style={{ marginLeft: '15px', color:'#d5a4a5 !important' }}
+            style={{ marginLeft: '15px', color: '#d5a4a5 !important' }}
           >
             <Row gutter={[8, 0]}>
               <Col xs={24}>
@@ -123,7 +123,6 @@ export const SignInPage = () => {
                 >
                   Continue
                 </Button>
-                <Link href={PATH_AUTH.passwordReset}>Forgot password?</Link>
               </Flex>
             </Form.Item>
           </Form>
