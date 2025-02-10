@@ -17,6 +17,7 @@ const BodyPartsSchema = new mongoose.Schema({
   half_legs: { type: Boolean, required: true, default: false },
   bikini: { type: Boolean, required: true, default: false },
   back: { type: Boolean, required: true, default: false },
+  total_body: { type: Boolean, required: true, default: false },
 });
 
 const treatmentSchema = new mongoose.Schema({

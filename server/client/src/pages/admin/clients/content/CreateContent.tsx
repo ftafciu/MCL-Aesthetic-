@@ -63,6 +63,7 @@ function CreateContent() {
         half_legs: false,
         bikini: false,
         back: false,
+        total_body: false
     })
     const [messageApi, contextHolder] = message.useMessage();
 

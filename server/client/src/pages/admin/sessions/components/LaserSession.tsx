@@ -1,6 +1,6 @@
 import { Checkbox, Col, Row } from "antd";
 
-const bodyParts = ['face total', 'moustache', 'barseta', 'mjeker', 'barku', 'vithe', 'fundshpine', 'hands', '1/2 arms', 'arms', 'armpits', 'legs', '1/2 legs', 'bikini', 'back'];
+const bodyParts = ['face total', 'moustache', 'barseta', 'mjeker', 'barku', 'vithe', 'fundshpine', 'hands', '1/2 arms', 'arms', 'armpits', 'legs', '1/2 legs', 'bikini', 'back', 'total body'];
 
 function LaserSession({ defaultValues, onChangeInfo }: { defaultValues: any, onChangeInfo: any }) {
 
