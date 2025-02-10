@@ -124,7 +124,7 @@ function CreateContent() {
                                 <Input />
                             </Form.Item>
 
-                            <Form.Item label="Email" name="email" rules={[{ required: true, message: 'Email is required!' }]}>
+                            <Form.Item label="Email" name="email" rules={[{ required: false, message: 'Email is required!' }]}>
                                 <Input />
                             </Form.Item>
 
@@ -135,7 +135,7 @@ function CreateContent() {
                             <Form.Item
                                 label="Birthday"
                                 name="birthday"
-                                rules={[{ required: true, message: 'Please input!' }]}
+                                rules={[{ required: false, message: 'Please input!' }]}
                             >
                                 <DatePicker />
                             </Form.Item>
