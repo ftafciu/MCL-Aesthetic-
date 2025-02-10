@@ -1,6 +1,6 @@
 import { Checkbox, Col, Row } from "antd";
 
-const bodyParts = ['face', 'arms', 'armpits', 'legs', 'bikini', 'back', 'abs'];
+const bodyParts = ['face total', 'moustache', 'barseta', 'mjeker', 'barku', 'vithe', 'fundshpine', 'hands', '1/2 arms', 'arms', 'armpits', 'legs', '1/2 legs', 'bikini', 'back'];
 
 function LaserSession({ defaultValues, onChangeInfo }: { defaultValues: any, onChangeInfo: any }) {
 
@@ -9,8 +9,8 @@ function LaserSession({ defaultValues, onChangeInfo }: { defaultValues: any, onC
     return (
         <div>
             <p>Select the body parts to apply the laser</p>
-            <Checkbox.Group 
-                style={{ width: '100%' }} 
+            <Checkbox.Group
+                style={{ width: '100%' }}
                 value={defaultCheckedValues}
                 onChange={(checkedValues) => {
                     bodyParts.forEach(part => {

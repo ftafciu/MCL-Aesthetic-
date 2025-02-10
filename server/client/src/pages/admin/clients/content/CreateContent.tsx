@@ -48,18 +48,26 @@ function CreateContent() {
         dermopen: false
     });
     const [bodyParts, setBodyParts] = useState({
-        face: false,
+        face_total: false,
+        moustache: false,
+        barseta: false,
+        mjeker: false,
+        barku: false,
+        vithe: false,
+        fundshpine: false,
+        hands: false,
+        half_arms: false,
         arms: false,
         armpits: false,
         legs: false,
+        half_legs: false,
         bikini: false,
         back: false,
-        abs: false
     })
     const [messageApi, contextHolder] = message.useMessage();
 
     const onChangeFaceTreatment = (fieldName: string, newValue: boolean) => {
-        setFaceTreatment((prev: any) =>{
+        setFaceTreatment((prev: any) => {
             prev[fieldName] = newValue;
             return { ...prev }
         })
@@ -147,10 +155,10 @@ function CreateContent() {
                             </Form.Item>
                         </Form>
                     </div>
-                    <div style={{ width: '45%'}}>
+                    <div style={{ width: '45%' }}>
                         <h2>Select the planned treatment</h2>
-                        <LaserSession defaultValues={bodyParts} onChangeInfo={onChangeBodyParts}/>
-                        <HeadSession defaultValues={faceTreatment} onChangeInfo={onChangeFaceTreatment}/>
+                        <LaserSession defaultValues={bodyParts} onChangeInfo={onChangeBodyParts} />
+                        <HeadSession defaultValues={faceTreatment} onChangeInfo={onChangeFaceTreatment} />
                     </div>
                 </Flex>
             </Card>

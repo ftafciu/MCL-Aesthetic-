@@ -2,13 +2,21 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const BodyPartsSchema = new mongoose.Schema({
-  face: { type: Boolean, required: true, default: false },
+  face_total: { type: Boolean, required: true, default: false },
+  moustache: { type: Boolean, required: true, default: false },
+  barseta: { type: Boolean, required: true, default: false },
+  mjeker: { type: Boolean, required: true, default: false },
+  barku: { type: Boolean, required: true, default: false },
+  vithe: { type: Boolean, required: true, default: false },
+  fundshpine: { type: Boolean, required: true, default: false },
+  hands: { type: Boolean, required: true, default: false },
+  half_arms: { type: Boolean, required: true, default: false },
   arms: { type: Boolean, required: true, default: false },
   armpits: { type: Boolean, required: true, default: false },
   legs: { type: Boolean, required: true, default: false },
+  half_legs: { type: Boolean, required: true, default: false },
   bikini: { type: Boolean, required: true, default: false },
   back: { type: Boolean, required: true, default: false },
-  abs: { type: Boolean, required: true, default: false },
 });
 
 const treatmentSchema = new mongoose.Schema({
