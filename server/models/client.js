@@ -28,14 +28,14 @@ const PlannedTreatmentSchema = new Schema({
 const clientSchema = new Schema({
   name: { type: String, required: true },
   surname: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: false },
   phoneNumber: {
     type: String,
     required: true,
     unique: true,
   },
-  age: { type: Number, required: true },
-  birthday: { type: Date, required: true },
+  age: { type: Number, required: false },
+  birthday: { type: Date, required: false },
   status: {
     type: String,
     enum: ["new", "in-progress", "done"],
